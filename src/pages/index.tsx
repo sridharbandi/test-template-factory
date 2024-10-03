@@ -6,6 +6,8 @@ import RadioGroup from '../components/RadioGroup';
 import { AutomationTool, ProgrammingLanguage, BuildTool, Runner, ProjectConfig } from '../types';
 import { AUTOMATION_TOOLS, PROGRAMMING_LANGUAGES, BUILD_TOOLS, RUNNERS } from '../utils/constants';
 import Preview from '../components/Preview';
+import { useTheme } from '../components/ThemeProvider';
+import { MoonIcon, SunIcon } from '@heroicons/react/24/solid';
 
 const Home: React.FC = () => {
     const [config, setConfig] = useState<ProjectConfig>({
@@ -14,7 +16,7 @@ const Home: React.FC = () => {
         buildTool: 'maven',
         runner: 'junit',
     });
-
+    const { theme, toggleTheme } = useTheme();
     const [showPreview, setShowPreview] = useState(false);
 
     useEffect(() => {
@@ -133,53 +135,61 @@ const Home: React.FC = () => {
     };
 
     return (
-        <div className="flex flex-col min-h-screen">
-            <Head>
-                <title>Test Automation Template Generator</title>
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
+            <div className={`flex flex-col min-h-screen ${theme === 'dark' ? 'bg-gray-900 text-gray-100' : 'bg-white text-gray-900'}`}>
+                <Head>
+                    <title>Test Automation Template Generator</title>
+                    <link rel="icon" href="/favicon.ico" />
+                </Head>
 
-            <Header />
+                <main className="flex-grow container mx-auto px-4 py-8">
+                    <div className="flex justify-between items-center mb-8">
+                        <h1 className="text-4xl font-bold">Test Automation Template Generator</h1>
+                        <button
+                            onClick={toggleTheme}
+                            className={`p-2 rounded-full ${theme === 'dark' ? 'bg-gray-700 text-yellow-400' : 'bg-gray-200 text-gray-600'}`}
+                        >
+                            {theme === 'dark' ? <SunIcon className="h-6 w-6" /> : <MoonIcon className="h-6 w-6" />}
+                        </button>
+                    </div>
 
-            <main className="flex-grow container mx-auto px-4 py-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <RadioGroup
-                        label="Automation Tool"
-                        options={AUTOMATION_TOOLS}
-                        selectedOption={config.tool}
-                        onChange={handleConfigChange('tool')}
-                    />
-                    <RadioGroup
-                        label="Programming Language"
-                        options={getLanguageOptions()}
-                        selectedOption={config.language}
-                        onChange={handleConfigChange('language')}
-                    />
-                    <RadioGroup
-                        label="Build Tool"
-                        options={getBuildToolOptions()}
-                        selectedOption={config.buildTool}
-                        onChange={handleConfigChange('buildTool')}
-                    />
-                    <RadioGroup
-                        label="Runner"
-                        options={getRunnerOptions()}
-                        selectedOption={config.runner}
-                        onChange={handleConfigChange('runner')}
-                    />
-                </div>
-            </main>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <RadioGroup
+                            label="Automation Tool"
+                            options={AUTOMATION_TOOLS}
+                            selectedOption={config.tool}
+                            onChange={handleConfigChange('tool')}
+                        />
+                        <RadioGroup
+                            label="Programming Language"
+                            options={getLanguageOptions()}
+                            selectedOption={config.language}
+                            onChange={handleConfigChange('language')}
+                        />
+                        <RadioGroup
+                            label="Build Tool"
+                            options={getBuildToolOptions()}
+                            selectedOption={config.buildTool}
+                            onChange={handleConfigChange('buildTool')}
+                        />
+                        <RadioGroup
+                            label="Runner"
+                            options={getRunnerOptions()}
+                            selectedOption={config.runner}
+                            onChange={handleConfigChange('runner')}
+                        />
+                    </div>
+                </main>
 
-            <Footer onGenerate={handleGenerate} onPreview={handlePreview} />
+                <Footer onGenerate={handleGenerate} onPreview={handlePreview} />
 
-            {showPreview && (
-                <Preview
-                    config={config}
-                    onClose={() => setShowPreview(false)}
-                    onDownload={handleDownload}
-                />
-            )}
-        </div>
+                {showPreview && (
+                    <Preview
+                        config={config}
+                        onClose={() => setShowPreview(false)}
+                        onDownload={handleDownload}
+                    />
+                )}
+            </div>
     );
 };
 

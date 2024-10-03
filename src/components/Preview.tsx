@@ -5,6 +5,8 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import { ClipboardIcon, ArrowDownTrayIcon } from '@heroicons/react/24/solid';
 import ReactMarkdown from 'react-markdown';
+import { useTheme } from './ThemeProvider';
+import { MoonIcon, SunIcon } from '@heroicons/react/24/solid';
 
 interface PreviewProps {
     config: ProjectConfig;
@@ -25,6 +27,7 @@ const Preview: React.FC<PreviewProps> = ({ config, onClose, onDownload }) => {
     const [fileContent, setFileContent] = useState<string | null>(null);
     const [expandedFolders, setExpandedFolders] = useState<Set<string>>(new Set());
     const [error, setError] = useState<string | null>(null);
+    const { theme } = useTheme();
 
     useEffect(() => {
         fetchRepoTree(config);
@@ -151,13 +154,13 @@ const Preview: React.FC<PreviewProps> = ({ config, onClose, onDownload }) => {
                 return (
                     <li 
                         key={currentPath}
-                        className={`flex items-center cursor-pointer hover:bg-gray-700 p-1 ${selectedFile === currentPath ? 'text-blue-400 font-bold' : ''}`}
+                        className={`flex items-center cursor-pointer hover:bg-gray-700 p-1 ${selectedFile === currentPath ? 'text-green-400 font-bold' : ''}`}
                         onClick={() => {
                             setSelectedFile(currentPath);
                             fetchFileContent(item.url);
                         }}
                     >
-                        <DocumentIcon className="h-5 w-5 mr-2 text-blue-500" />
+                        <DocumentIcon className="h-5 w-5 mr-2 text-green-500" />
                         {item.path}
                     </li>
                 );
@@ -221,10 +224,12 @@ const Preview: React.FC<PreviewProps> = ({ config, onClose, onDownload }) => {
     };
 
     return (
-        <div className="fixed inset-0 bg-white text-gray-900 flex flex-col">
+        <div className={`fixed inset-0 ${theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'} flex flex-col`}>
             <div className="flex-grow flex">
-                <div className="w-1/3 bg-gray-100 p-4 overflow-auto">
-                    <h3 className="text-lg font-medium mb-4">File Tree</h3>
+                <div className={`w-1/3 ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'} p-4 overflow-auto`}>
+                    <div className="flex justify-between items-center mb-4">
+                        <h3 className="text-lg font-medium">File Tree</h3>
+                    </div>
                     {error && <div className="text-red-500 mb-4">{error}</div>}
                     <div className="overflow-auto max-h-[calc(100vh-12rem)]">
                         <ul className="space-y-2">
@@ -232,24 +237,24 @@ const Preview: React.FC<PreviewProps> = ({ config, onClose, onDownload }) => {
                         </ul>
                     </div>
                 </div>
-                <div className="w-2/3 bg-white p-4 overflow-auto">
+                <div className={`w-2/3 ${theme === 'dark' ? 'bg-gray-900' : 'bg-white'} p-4 overflow-auto`}>
                     <div className="flex justify-between items-center mb-4">
                         <h3 className="text-lg font-medium">File Preview</h3>
                         {selectedFile && (
                             <div className="flex space-x-2">
                                 <button
                                     onClick={handleCopyToClipboard}
-                                    className="p-1 rounded hover:bg-gray-200"
+                                    className={`p-2 rounded-full ${theme === 'dark' ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'}`}
                                     title="Copy to Clipboard"
                                 >
-                                    <ClipboardIcon className="h-5 w-5 text-gray-600" />
+                                    <ClipboardIcon className="h-5 w-5" />
                                 </button>
                                 <button
                                     onClick={handleDownloadFile}
-                                    className="p-1 rounded hover:bg-gray-200"
+                                    className={`p-2 rounded-full ${theme === 'dark' ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'}`}
                                     title="Download File"
                                 >
-                                    <ArrowDownTrayIcon className="h-5 w-5 text-gray-600" />
+                                    <ArrowDownTrayIcon className="h-5 w-5" />
                                 </button>
                             </div>
                         )}
@@ -257,19 +262,20 @@ const Preview: React.FC<PreviewProps> = ({ config, onClose, onDownload }) => {
                     <div className="overflow-auto max-h-[calc(100vh-12rem)]">
                         {selectedFile ? (
                             selectedFile.toLowerCase().endsWith('.md') ? (
-                                <div className="prose max-w-none">
+                                <div className={`prose ${theme === 'dark' ? 'prose-invert' : ''} max-w-none`}>
                                     <ReactMarkdown>{fileContent || ''}</ReactMarkdown>
                                 </div>
                             ) : (
                                 <SyntaxHighlighter
                                     language={getLanguage(selectedFile)}
-                                    style={vscDarkPlus}
+                                    style={theme === 'dark' ? vscDarkPlus : undefined}
                                     showLineNumbers={true}
                                     wrapLines={true}
                                     customStyle={{
                                         margin: 0,
                                         padding: '1rem',
                                         borderRadius: '0.25rem',
+                                        backgroundColor: theme === 'dark' ? '#1e1e1e' : '#f8f8f8',
                                     }}
                                 >
                                     {fileContent || ''}
@@ -281,16 +287,16 @@ const Preview: React.FC<PreviewProps> = ({ config, onClose, onDownload }) => {
                     </div>
                 </div>
             </div>
-            <footer className="bg-gray-200 p-4 flex justify-center space-x-4">
+            <footer className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-200'} p-4 flex justify-center space-x-4`}>
                 <button
                     onClick={onClose}
-                    className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+                    className={`${theme === 'dark' ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-300 hover:bg-gray-400'} text-${theme === 'dark' ? 'white' : 'gray-900'} font-bold py-2 px-4 rounded`}
                 >
                     Close
                 </button>
                 <button
                     onClick={onDownload}
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
                 >
                     Download
                 </button>
