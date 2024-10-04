@@ -24,7 +24,7 @@ const RadioGroup: React.FC<RadioGroupProps> = ({ label, options, selectedOption,
                             checked={selectedOption === option}
                             onChange={() => onChange(option)}
                         />
-                        <span className={`w-4 h-4 inline-block mr-2 rounded-full ${selectedOption === option ? 'bg-green-500' : 'border border-green-500'}`}></span>
+                        <span className={`w-4 h-4 inline-block mr-2 rounded-full ${selectedOption === option ? 'bg-violet-500' : 'border border-violet-500'}`}></span>
                         <span>{option}</span>
                     </label>
                 </div>

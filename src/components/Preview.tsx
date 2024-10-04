@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ProjectConfig } from '../types';
-import { FolderIcon, DocumentIcon, ChevronRightIcon, ChevronDownIcon, FolderOpenIcon } from '@heroicons/react/24/solid';
+import { FolderIcon, DocumentIcon, ChevronRightIcon, ChevronDownIcon, FolderOpenIcon } from '@heroicons/react/24/outline';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import { ClipboardIcon, ArrowDownTrayIcon } from '@heroicons/react/24/solid';
@@ -127,7 +127,7 @@ const Preview: React.FC<PreviewProps> = ({ config, onClose, onDownload }) => {
                 const isExpanded = expandedFolders.has(currentPath);
                 return (
                     <li key={currentPath}>
-                        <div 
+                        <div
                             className="flex items-center cursor-pointer hover:bg-gray-700 p-1"
                             onClick={() => toggleFolder(currentPath)}
                         >
@@ -152,15 +152,15 @@ const Preview: React.FC<PreviewProps> = ({ config, onClose, onDownload }) => {
                 );
             } else {
                 return (
-                    <li 
+                    <li
                         key={currentPath}
-                        className={`flex items-center cursor-pointer hover:bg-gray-700 p-1 ${selectedFile === currentPath ? 'text-green-400 font-bold' : ''}`}
+                        className={`flex items-center cursor-pointer hover:bg-gray-700 p-1 ${selectedFile === currentPath ? 'text-violet-400 font-bold' : ''}`}
                         onClick={() => {
                             setSelectedFile(currentPath);
                             fetchFileContent(item.url);
                         }}
                     >
-                        <DocumentIcon className="h-5 w-5 mr-2 text-green-500" />
+                        <DocumentIcon className="h-5 w-5 mr-2 text-violet-500" />
                         {item.path}
                     </li>
                 );
@@ -224,79 +224,90 @@ const Preview: React.FC<PreviewProps> = ({ config, onClose, onDownload }) => {
     };
 
     return (
-        <div className={`fixed inset-0 ${theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'} flex flex-col`}>
-            <div className="flex-grow flex">
-                <div className={`w-1/3 ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'} p-4 overflow-auto`}>
-                    <div className="flex justify-between items-center mb-4">
-                        <h3 className="text-lg font-medium">File Tree</h3>
+        <div className={`h-screen flex flex-col ${theme === 'dark' ? 'bg-gray-800 text-gray-100' : 'bg-white text-gray-900'}`}>
+            <div className="flex-grow overflow-hidden">
+                <div className="flex h-full">
+                    <div className={`w-1/3 ${theme === 'dark' ? 'bg-gray-900' : 'bg-white'} p-6 overflow-auto border-r ${theme === 'dark' ? 'border-gray-700' : 'border-gray-300'}`}>
+                        <div className={`flex justify-between items-center mb-4 pb-2 border-b ${theme === 'dark' ? 'border-gray-700' : 'border-gray-300'}`}>
+                            <h2 className="py-2 text-lg font-medium">Structure</h2>
+                        </div>
+                        {error && <div className="text-red-500 mb-4">{error}</div>}
+                        <div className="overflow-auto max-h-[calc(100vh-12rem)]">
+                            <ul className="space-y-2">
+                                {renderTree(treeData)}
+                            </ul>
+                        </div>
                     </div>
-                    {error && <div className="text-red-500 mb-4">{error}</div>}
-                    <div className="overflow-auto max-h-[calc(100vh-12rem)]">
-                        <ul className="space-y-2">
-                            {renderTree(treeData)}
-                        </ul>
-                    </div>
-                </div>
-                <div className={`w-2/3 ${theme === 'dark' ? 'bg-gray-900' : 'bg-white'} p-4 overflow-auto`}>
-                    <div className="flex justify-between items-center mb-4">
-                        <h3 className="text-lg font-medium">File Preview</h3>
-                        {selectedFile && (
-                            <div className="flex space-x-2">
-                                <button
-                                    onClick={handleCopyToClipboard}
-                                    className={`p-2 rounded-full ${theme === 'dark' ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'}`}
-                                    title="Copy to Clipboard"
-                                >
-                                    <ClipboardIcon className="h-5 w-5" />
-                                </button>
-                                <button
-                                    onClick={handleDownloadFile}
-                                    className={`p-2 rounded-full ${theme === 'dark' ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'}`}
-                                    title="Download File"
-                                >
-                                    <ArrowDownTrayIcon className="h-5 w-5" />
-                                </button>
-                            </div>
-                        )}
-                    </div>
-                    <div className="overflow-auto max-h-[calc(100vh-12rem)]">
-                        {selectedFile ? (
-                            selectedFile.toLowerCase().endsWith('.md') ? (
-                                <div className={`prose ${theme === 'dark' ? 'prose-invert' : ''} max-w-none`}>
-                                    <ReactMarkdown>{fileContent || ''}</ReactMarkdown>
+                    <div className={`w-2/3 ${theme === 'dark' ? 'bg-gray-900' : 'bg-white'} p-6 overflow-auto`}>
+                        <div className={`flex justify-between items-center mb-4 pb-2 border-b ${theme === 'dark' ? 'border-gray-700' : 'border-gray-300'}`}>
+                            <h3 className="py-2 text-lg font-medium">Preview</h3>
+                            {selectedFile && (
+                                <div className="flex space-x-2">
+                                    <button
+                                        onClick={handleCopyToClipboard}
+                                        className={`p-2 rounded-full ${theme === 'dark' ? 'text-violet-500 hover:bg-violet-500 hover:text-white' : 'text-violet-600 hover:bg-violet-600 hover:text-white'}`}
+                                        title="Copy to Clipboard"
+                                    >
+                                        <ClipboardIcon className="h-7 w-7" />
+                                    </button>
+                                    <button
+                                        onClick={handleDownloadFile}
+                                        className={`p-2 rounded-full ${theme === 'dark' ? 'text-violet-500 hover:bg-violet-500 hover:text-white' : 'text-violet-600 hover:bg-violet-600 hover:text-white'}`}
+                                        title="Download File"
+                                    >
+                                        <ArrowDownTrayIcon className="h-7 w-7" />
+                                    </button>
                                 </div>
+                            )}
+                        </div>
+                        <div className="overflow-auto max-h-[calc(100vh-12rem)]">
+                            {selectedFile ? (
+                                selectedFile.toLowerCase().endsWith('.md') ? (
+                                    <div className={`prose ${theme === 'dark' ? 'prose-invert' : ''} max-w-none`}>
+                                        <ReactMarkdown>{fileContent || ''}</ReactMarkdown>
+                                    </div>
+                                ) : (
+                                    <SyntaxHighlighter
+                                        language={getLanguage(selectedFile)}
+                                        style={theme === 'dark' ? vscDarkPlus : undefined}
+                                        showLineNumbers={true}
+                                        wrapLines={true}
+                                        codeTagProps={{
+                                            style: {
+                                                fontSize: "inherit",
+                                                lineHeight: "inherit"
+                                            }
+                                        }}
+                                        customStyle={{
+                                            margin: 0,
+                                            lineHeight: "1.5",
+                                            fontSize: "0.9em",
+                                            padding: '1rem',
+                                            borderRadius: '0.25rem',
+                                            backgroundColor: theme === 'dark' ? '#1e1e1e' : '#f8f8f8',
+                                        }}
+                                        Close
+                                    >
+                                        {fileContent || ''}
+                                    </SyntaxHighlighter>
+                                )
                             ) : (
-                                <SyntaxHighlighter
-                                    language={getLanguage(selectedFile)}
-                                    style={theme === 'dark' ? vscDarkPlus : undefined}
-                                    showLineNumbers={true}
-                                    wrapLines={true}
-                                    customStyle={{
-                                        margin: 0,
-                                        padding: '1rem',
-                                        borderRadius: '0.25rem',
-                                        backgroundColor: theme === 'dark' ? '#1e1e1e' : '#f8f8f8',
-                                    }}
-                                >
-                                    {fileContent || ''}
-                                </SyntaxHighlighter>
-                            )
-                        ) : (
-                            <p>Select a file to preview</p>
-                        )}
+                                <p>Select a file to preview</p>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
             <footer className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-200'} p-4 flex justify-center space-x-4`}>
                 <button
                     onClick={onClose}
-                    className={`${theme === 'dark' ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-300 hover:bg-gray-400'} text-${theme === 'dark' ? 'white' : 'gray-900'} font-bold py-2 px-4 rounded`}
+                    className={`border ${theme === 'dark' ? 'border-violet-500 text-violet-500 hover:bg-violet-500 hover:text-white' : 'border-violet-600 text-violet-600 hover:bg-violet-600 hover:text-white'} font-bold py-2 px-4 rounded`}
                 >
                     Close
                 </button>
                 <button
                     onClick={onDownload}
-                    className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+                    className={`border ${theme === 'dark' ? 'border-violet-500 text-violet-500 hover:bg-violet-500 hover:text-white' : 'border-violet-600 text-violet-600 hover:bg-violet-600 hover:text-white'} font-bold py-2 px-4 rounded`}
                 >
                     Download
                 </button>

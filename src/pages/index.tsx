@@ -8,6 +8,9 @@ import { AUTOMATION_TOOLS, PROGRAMMING_LANGUAGES, BUILD_TOOLS, RUNNERS } from '.
 import Preview from '../components/Preview';
 import { useTheme } from '../components/ThemeProvider';
 import { MoonIcon, SunIcon } from '@heroicons/react/24/solid';
+import Logo from '../assets/logo.svg';
+import Image from 'next/image';
+import SideBar from '../components/SideBar';
 
 const Home: React.FC = () => {
     const [config, setConfig] = useState<ProjectConfig>({
@@ -29,7 +32,7 @@ const Home: React.FC = () => {
     const handleConfigChange = (key: keyof ProjectConfig) => (value: string) => {
         setConfig(prevConfig => {
             const newConfig = { ...prevConfig, [key]: value };
-            
+
             if (key === 'tool') {
                 if (value === 'selenium' || value === 'playwright') {
                     newConfig.language = 'java';
@@ -135,38 +138,46 @@ const Home: React.FC = () => {
     };
 
     return (
-            <div className={`flex flex-col min-h-screen ${theme === 'dark' ? 'bg-gray-900 text-gray-100' : 'bg-white text-gray-900'}`}>
+        <div className={`flex ${theme === 'dark' ? 'bg-gray-900 text-gray-100' : 'bg-white text-gray-900'}`}>
+            <SideBar toggleTheme={toggleTheme} />
+            <div className="flex-1 min-h-screen ml-16 pb-20">
                 <Head>
-                    <title>Test Automation Template Generator</title>
+                    <title>Test Template Factory</title>
                     <link rel="icon" href="/favicon.ico" />
+                    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+                    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+                    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+                    <link rel="manifest" href="/site.webmanifest" />
                 </Head>
 
                 <main className="flex-grow container mx-auto px-4 py-8">
                     <div className="flex justify-between items-center mb-8">
-                        <h1 className="text-4xl font-bold">Test Automation Template Generator</h1>
-                        <button
-                            onClick={toggleTheme}
-                            className={`p-2 rounded-full ${theme === 'dark' ? 'bg-gray-700 text-yellow-400' : 'bg-gray-200 text-gray-600'}`}
-                        >
-                            {theme === 'dark' ? <SunIcon className="h-6 w-6" /> : <MoonIcon className="h-6 w-6" />}
-                        </button>
+                        <div className="flex items-center">
+                            <Image src={Logo} alt="Logo" width={48} height={48} className="mr-4" />
+                            <div>
+                                <h1 className="text-4xl font-bold">Test Template Factory</h1>
+                                <p className={`text-sm italic mt-2 ${theme === 'dark' ? 'text-violet-400' : 'text-violet-600'}`}>
+                                    Kickstart automation frameworks in just a few clicks
+                                </p>
+                            </div>
+                        </div>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                         <RadioGroup
-                            label="Automation Tool"
+                            label="Tool"
                             options={AUTOMATION_TOOLS}
                             selectedOption={config.tool}
                             onChange={handleConfigChange('tool')}
                         />
                         <RadioGroup
-                            label="Programming Language"
+                            label="Language"
                             options={getLanguageOptions()}
                             selectedOption={config.language}
                             onChange={handleConfigChange('language')}
                         />
                         <RadioGroup
-                            label="Build Tool"
+                            label="Build"
                             options={getBuildToolOptions()}
                             selectedOption={config.buildTool}
                             onChange={handleConfigChange('buildTool')}
@@ -183,13 +194,20 @@ const Home: React.FC = () => {
                 <Footer onGenerate={handleGenerate} onPreview={handlePreview} />
 
                 {showPreview && (
-                    <Preview
-                        config={config}
-                        onClose={() => setShowPreview(false)}
-                        onDownload={handleDownload}
-                    />
+                    <div className="fixed inset-0 z-50 ml-16 overflow-hidden">
+                        <div className="absolute inset-0 bg-black bg-opacity-50" onClick={() => setShowPreview(false)}></div>
+                        <div className="absolute inset-x-0 bottom-0 transform transition-transform duration-300 ease-in-out"
+                             style={{ transform: showPreview ? 'translateY(0)' : 'translateY(100%)' }}>
+                            <Preview
+                                config={config}
+                                onClose={() => setShowPreview(false)}
+                                onDownload={handleDownload}
+                            />
+                        </div>
+                    </div>
                 )}
             </div>
+        </div>
     );
 };
 
