@@ -14,3 +14,19 @@
 .burger-menu-slide.show {
   transform: translateY(0);
 }
+
+.preview-slide {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    transform: translateY(100%);
+    transition: transform 0.3s ease-out;
+    z-index: 30;
+    height: 100vh;
+    overflow-y: auto;
+  }
+  
+  .preview-slide.show {
+    transform: translateY(0);
+  }

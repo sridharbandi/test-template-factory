@@ -128,7 +128,7 @@ const Preview: React.FC<PreviewProps> = ({ config, onClose, onDownload }) => {
                 return (
                     <li key={currentPath}>
                         <div
-                            className="flex items-center cursor-pointer hover:bg-gray-700 p-1"
+                            className={`flex items-center cursor-pointer ${theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-200'} p-1`}
                             onClick={() => toggleFolder(currentPath)}
                         >
                             {isExpanded ? (
@@ -154,7 +154,7 @@ const Preview: React.FC<PreviewProps> = ({ config, onClose, onDownload }) => {
                 return (
                     <li
                         key={currentPath}
-                        className={`flex items-center cursor-pointer hover:bg-gray-700 p-1 ${selectedFile === currentPath ? 'text-violet-400 font-bold' : ''}`}
+                        className={`flex items-center cursor-pointer ${theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-200'} p-1 ${selectedFile === currentPath ? 'text-violet-400 font-bold' : ''}`}
                         onClick={() => {
                             setSelectedFile(currentPath);
                             fetchFileContent(item.url);
@@ -201,7 +201,6 @@ const Preview: React.FC<PreviewProps> = ({ config, onClose, onDownload }) => {
     const handleCopyToClipboard = () => {
         if (fileContent) {
             navigator.clipboard.writeText(fileContent).then(() => {
-                // You can add a toast notification here if you want
                 console.log('Copied to clipboard');
             }, (err) => {
                 console.error('Could not copy text: ', err);

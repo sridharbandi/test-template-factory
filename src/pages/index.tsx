@@ -203,10 +203,9 @@ const Home: React.FC = () => {
                 <Footer onGenerate={handleGenerate} onPreview={handlePreview} />
 
                 {showPreview && (
-                    <div className="fixed inset-0 z-30 sm:ml-16 overflow-hidden">
+                    <div className={`preview-slide ${showPreview ? 'show' : ''} fixed inset-0 z-30 sm:ml-16 overflow-hidden`}>
                         <div className="absolute inset-0 bg-black bg-opacity-50" onClick={() => setShowPreview(false)}></div>
-                        <div className="absolute inset-x-0 bottom-0 transform transition-transform duration-300 ease-in-out"
-                            style={{ transform: showPreview ? 'translateY(0)' : 'translateY(100%)' }}>
+                        <div className="absolute inset-x-0 bottom-0 h-full">
                             <Preview
                                 config={config}
                                 onClose={() => setShowPreview(false)}
