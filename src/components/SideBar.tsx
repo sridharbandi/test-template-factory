@@ -17,7 +17,7 @@ const SideBar: React.FC<SideBarProps> = ({ toggleTheme }) => {
 
     return (
         <>
-            <div className={`fixed left-0 top-0 h-full w-16 flex flex-col items-center py-8 ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-200'} z-50`}>
+            <div className={`hidden sm:flex fixed left-0 top-0 h-full w-16 flex-col items-center py-8 ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-200'} z-50`}>
                 <button className="mb-8"
                     onClick={toggleBurgerMenu}
                 >

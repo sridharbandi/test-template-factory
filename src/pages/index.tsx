@@ -140,7 +140,7 @@ const Home: React.FC = () => {
     return (
         <div className={`flex ${theme === 'dark' ? 'bg-gray-900 text-gray-100' : 'bg-white text-gray-900'}`}>
             <SideBar toggleTheme={toggleTheme} />
-            <div className="flex-1 min-h-screen ml-16 pb-20">
+            <div className="flex-1 min-h-screen sm:ml-16 pb-20">
                 <Head>
                     <title>Test Template Factory</title>
                     <link rel="icon" href="/favicon.ico" />
@@ -203,7 +203,7 @@ const Home: React.FC = () => {
                 <Footer onGenerate={handleGenerate} onPreview={handlePreview} />
 
                 {showPreview && (
-                    <div className="fixed inset-0 z-30 ml-16 overflow-hidden">
+                    <div className="fixed inset-0 z-30 sm:ml-16 overflow-hidden">
                         <div className="absolute inset-0 bg-black bg-opacity-50" onClick={() => setShowPreview(false)}></div>
                         <div className="absolute inset-x-0 bottom-0 transform transition-transform duration-300 ease-in-out"
                             style={{ transform: showPreview ? 'translateY(0)' : 'translateY(100%)' }}>
