@@ -151,7 +151,7 @@ const Home: React.FC = () => {
                 </Head>
 
                 <main className="flex-grow container mx-auto px-4 py-8">
-                    <div className="flex justify-between items-center mb-8">
+                    <div className={`flex justify-between items-center mb-8 pb-4 border-b ${theme === 'dark' ? 'border-gray-700' : 'border-gray-300'}`}>
                         <div className="flex items-center">
                             <Image src={Logo} alt="Logo" width={48} height={48} className="mr-4" />
                             <div>
@@ -194,7 +194,7 @@ const Home: React.FC = () => {
                 <Footer onGenerate={handleGenerate} onPreview={handlePreview} />
 
                 {showPreview && (
-                    <div className="fixed inset-0 z-50 ml-16 overflow-hidden">
+                    <div className="fixed inset-0 z-30 ml-16 overflow-hidden">
                         <div className="absolute inset-0 bg-black bg-opacity-50" onClick={() => setShowPreview(false)}></div>
                         <div className="absolute inset-x-0 bottom-0 transform transition-transform duration-300 ease-in-out"
                              style={{ transform: showPreview ? 'translateY(0)' : 'translateY(100%)' }}>

@@ -14,7 +14,7 @@ const BurgerMenuContent: React.FC<BurgerMenuContentProps> = ({ onClose }) => {
     <div className={`fixed inset-0 z-50 ${theme === 'dark' ? 'bg-gray-900 text-gray-100' : 'bg-white text-gray-900'} overflow-y-auto`}>
       <div className="min-h-screen ml-16 py-8 px-4">
         <div className="container mx-auto">
-          <div className="flex justify-between items-center mb-8">
+          <div className={`flex justify-between items-center mb-8 pb-4 border-b ${theme === 'dark' ? 'border-gray-700' : 'border-gray-300'}`}>
             <div className="flex items-center">
               <Image src={Logo} alt="Logo" width={48} height={48} className="mr-4" />
               <div>
