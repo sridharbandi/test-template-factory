@@ -1,0 +1,16 @@
+.burger-menu-slide {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transform: translateY(-100%);
+  transition: transform 0.3s ease-out;
+  z-index: 40;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.burger-menu-slide.show {
+  transform: translateY(0);
+}
