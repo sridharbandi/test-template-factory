@@ -18,8 +18,17 @@ const BurgerMenuContent: React.FC<BurgerMenuContentProps> = ({ onClose }) => {
             <div className="flex items-center">
               <Image src={Logo} alt="Logo" width={48} height={48} className="mr-4" />
               <div>
-                <h1 className="text-4xl font-bold">Test Template Factory</h1>
-                <p className={`text-sm italic mt-2 ${theme === 'dark' ? 'text-violet-400' : 'text-violet-600'}`}>
+                <h1 className="text-4xl font-bold">
+                  <span className="hidden sm:inline">
+                    <span className={`${theme === 'dark' ? 'text-violet-400' : 'text-violet-600'}`}>T</span>est{' '}
+                    <span className={`${theme === 'dark' ? 'text-violet-400' : 'text-violet-600'}`}>T</span>emplate{' '}
+                    <span className={`${theme === 'dark' ? 'text-violet-400' : 'text-violet-600'}`}>F</span>actory
+                  </span>
+                  <span className="sm:hidden">
+                    <span className={`${theme === 'dark' ? 'text-violet-400' : 'text-violet-600'}`}>TTF</span>
+                  </span>
+                </h1>
+                <p className={`text-sm italic mt-2 ${theme === 'dark' ? 'text-violet-400' : 'text-violet-600'} hidden sm:block`}>
                   Kickstart automation frameworks in just a few clicks
                 </p>
               </div>
@@ -30,14 +39,6 @@ const BurgerMenuContent: React.FC<BurgerMenuContentProps> = ({ onClose }) => {
             Test Template Factory is a powerful tool designed to streamline the process of setting up test automation frameworks. 
           With just a few clicks, you can generate a complete project structure tailored to your specific needs, 
           saving valuable time and ensuring consistency across your testing projects.
-          Test Template Factory is a powerful tool designed to streamline the process of setting up test automation frameworks. 
-          With just a few clicks, you can generate a complete project structure tailored to your specific needs, 
-          saving valuable time and ensuring consistency across your testing projects.
-        
-          Test Template Factory is a powerful tool designed to streamline the process of setting up test automation frameworks. 
-          With just a few clicks, you can generate a complete project structure tailored to your specific needs, 
-          saving valuable time and ensuring consistency across your testing projects.
-        
           Test Template Factory is a powerful tool designed to streamline the process of setting up test automation frameworks. 
           With just a few clicks, you can generate a complete project structure tailored to your specific needs, 
           saving valuable time and ensuring consistency across your testing projects.

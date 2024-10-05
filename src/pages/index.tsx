@@ -155,8 +155,17 @@ const Home: React.FC = () => {
                         <div className="flex items-center">
                             <Image src={Logo} alt="Logo" width={48} height={48} className="mr-4" />
                             <div>
-                                <h1 className="text-4xl font-bold">Test Template Factory</h1>
-                                <p className={`text-sm italic mt-2 ${theme === 'dark' ? 'text-violet-400' : 'text-violet-600'}`}>
+                                <h1 className="text-4xl font-bold">
+                                    <span className="hidden sm:inline">
+                                        <span className={`${theme === 'dark' ? 'text-violet-400' : 'text-violet-600'}`}>T</span>est{' '}
+                                        <span className={`${theme === 'dark' ? 'text-violet-400' : 'text-violet-600'}`}>T</span>emplate{' '}
+                                        <span className={`${theme === 'dark' ? 'text-violet-400' : 'text-violet-600'}`}>F</span>actory
+                                    </span>
+                                    <span className="sm:hidden">
+                                        <span className={`${theme === 'dark' ? 'text-violet-400' : 'text-violet-600'}`}>TTF</span>
+                                    </span>
+                                </h1>
+                                <p className={`text-sm italic mt-2 ${theme === 'dark' ? 'text-violet-400' : 'text-violet-600'} hidden sm:block`}>
                                     Kickstart automation frameworks in just a few clicks
                                 </p>
                             </div>
@@ -197,7 +206,7 @@ const Home: React.FC = () => {
                     <div className="fixed inset-0 z-30 ml-16 overflow-hidden">
                         <div className="absolute inset-0 bg-black bg-opacity-50" onClick={() => setShowPreview(false)}></div>
                         <div className="absolute inset-x-0 bottom-0 transform transition-transform duration-300 ease-in-out"
-                             style={{ transform: showPreview ? 'translateY(0)' : 'translateY(100%)' }}>
+                            style={{ transform: showPreview ? 'translateY(0)' : 'translateY(100%)' }}>
                             <Preview
                                 config={config}
                                 onClose={() => setShowPreview(false)}
