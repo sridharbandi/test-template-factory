@@ -11,18 +11,10 @@ export const useTreeData = (config: ProjectConfig) => {
 
     const fetchRepoTree = async (config: ProjectConfig) => {
         try {
-            const response = await fetch(
-                `https://api.github.com/repos/sridharbandi/Selenium-Serenity-Junit-Template/git/trees/master?recursive=true`,
-                {
-                    headers: {
-                        'Accept': 'application/vnd.github+json',
-                        'Authorization': `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`,
-                    },
-                }
-            );
-
+            const response = await fetch(`/api/github-api?action=tree&tool=${config.tool}&language=${config.language}&build=${config.buildTool}&runner=${config.runner}`);
+            
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                throw new Error('Failed to fetch GitHub tree');
             }
 
             const data = await response.json();

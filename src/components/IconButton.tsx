@@ -7,7 +7,7 @@ interface IconButtonProps {
     icon: React.ReactNode;
 }
 
-const IconButton: React.FC<IconButtonProps> = ({ onClick, title, icon }) => {
+const IconButton: React.FC<IconButtonProps> = React.memo(({ onClick, title, icon }) => {
     const { getThemedClass } = useThemedStyles();
     return (
         <button
@@ -18,6 +18,8 @@ const IconButton: React.FC<IconButtonProps> = ({ onClick, title, icon }) => {
             {icon}
         </button>
     );
-};
+});
+
+IconButton.displayName = 'IconButton';
 
 export default IconButton;
