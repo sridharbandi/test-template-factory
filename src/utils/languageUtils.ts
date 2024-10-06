@@ -3,8 +3,8 @@ export const getLanguage = (fileName: string): string => {
     switch (extension) {
         case 'js': return 'javascript';
         case 'ts': return 'typescript';
-        case 'jsx': return 'jsx';
-        case 'tsx': return 'tsx';
+        case 'jsx': return 'javascript';
+        case 'tsx': return 'typescript';
         case 'html': return 'html';
         case 'css': return 'css';
         case 'json': return 'json';
@@ -12,6 +12,20 @@ export const getLanguage = (fileName: string): string => {
         case 'md': return 'markdown';
         case 'py': return 'python';
         case 'java': return 'java';
-        default: return 'text';
+        case 'properties': return 'properties';
+        case 'gradle': return 'groovy';
+        case 'cs': return 'csharp';
+        case 'go': return 'go';
+        case 'rb': return 'ruby';
+        case 'php': return 'php';
+        case 'rs': return 'rust';
+        case 'scala': return 'scala';
+        case 'swift': return 'swift';
+        case 'vb': return 'vb';
+        case 'sql': return 'sql';
+        case 'yaml': return 'yaml';
+        case 'yml': return 'yaml';
+        case 'bat': return 'powershell';
+        default: return 'bash';
     }
 };

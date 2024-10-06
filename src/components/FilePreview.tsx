@@ -4,9 +4,9 @@ import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import ReactMarkdown from 'react-markdown';
 import { useTheme } from './ThemeProvider';
 import { ClipboardIcon, ArrowDownTrayIcon } from '@heroicons/react/24/solid';
-import { getLanguage } from '../utils/languageUtils';
 import { usePreviewContent } from '../hooks/usePreviewContent';
 import IconButton from './IconButton';
+import { useThemedStyles } from '../hooks/useThemedStyles';
 
 interface FilePreviewProps {
     selectedFile: string | null;
@@ -16,12 +16,12 @@ interface FilePreviewProps {
 }
 
 const FilePreview: React.FC<FilePreviewProps> = ({ selectedFile, fileContent, onCopyToClipboard, onDownloadFile }) => {
-    const { theme } = useTheme();
+    const { getThemedClass } = useThemedStyles();
     const { language, isMarkdown } = usePreviewContent(selectedFile, fileContent);
 
     return (
         <>
-            <div className={`flex justify-between items-center mb-4 pb-2 border-b ${theme === 'dark' ? 'border-gray-700' : 'border-gray-300'}`}>
+            <div className={`flex justify-between items-center mb-4 pb-2 border-b ${getThemedClass('border-gray-700', 'border-gray-300')}`}>
                 <h3 className="py-2 text-lg font-medium">Preview</h3>
                 {selectedFile && (
                     <div className="flex space-x-2">
@@ -41,13 +41,13 @@ const FilePreview: React.FC<FilePreviewProps> = ({ selectedFile, fileContent, on
             <div className="overflow-auto max-h-[calc(100vh-12rem)]">
                 {selectedFile ? (
                     selectedFile.toLowerCase().endsWith('.md') ? (
-                        <div className={`prose ${theme === 'dark' ? 'prose-invert' : ''} max-w-none`}>
+                        <div className={`prose ${getThemedClass('prose-invert', '')} max-w-none`}>
                             <ReactMarkdown>{fileContent || ''}</ReactMarkdown>
                         </div>
                     ) : (
                         <SyntaxHighlighter
                             language={language}
-                            style={theme === 'dark' ? vscDarkPlus : undefined}
+                            style={getThemedClass(vscDarkPlus, undefined)}
                             showLineNumbers={true}
                             wrapLines={true}
                             codeTagProps={{
@@ -62,7 +62,7 @@ const FilePreview: React.FC<FilePreviewProps> = ({ selectedFile, fileContent, on
                                 fontSize: "0.9em",
                                 padding: '1rem',
                                 borderRadius: '0.25rem',
-                                backgroundColor: theme === 'dark' ? '#1e1e1e' : '#f8f8f8',
+                                backgroundColor: getThemedClass('#1e1e1e', '#f8f8f8'),
                             }}
                         >
                             {fileContent || ''}

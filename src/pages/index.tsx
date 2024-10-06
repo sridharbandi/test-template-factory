@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
-import Header from '../components/Header';
 import Footer from '../components/Footer';
 import RadioGroup from '../components/RadioGroup';
-import { AutomationTool, ProgrammingLanguage, BuildTool, Runner, ProjectConfig } from '../types';
+import { ProjectConfig } from '../types';
 import { AUTOMATION_TOOLS, PROGRAMMING_LANGUAGES, BUILD_TOOLS, RUNNERS } from '../utils/constants';
 import Preview from '../components/Preview';
 import { useTheme } from '../components/ThemeProvider';
-import { MoonIcon, SunIcon } from '@heroicons/react/24/solid';
 import Logo from '../assets/logo.svg';
 import Image from 'next/image';
 import SideBar from '../components/SideBar';
+import { useThemedStyles } from '../hooks/useThemedStyles';
 
 const Home: React.FC = () => {
     const [config, setConfig] = useState<ProjectConfig>({
@@ -20,6 +19,7 @@ const Home: React.FC = () => {
         runner: 'junit',
     });
     const { theme, toggleTheme } = useTheme();
+    const { getThemedClass } = useThemedStyles();
     const [showPreview, setShowPreview] = useState(false);
 
     useEffect(() => {
@@ -138,7 +138,7 @@ const Home: React.FC = () => {
     };
 
     return (
-        <div className={`flex ${theme === 'dark' ? 'bg-gray-900 text-gray-100' : 'bg-white text-gray-900'}`}>
+        <div className={`flex ${getThemedClass('bg-gray-900 text-gray-100', 'bg-white text-gray-900')}`}>
             <SideBar toggleTheme={toggleTheme} />
             <div className="flex-1 min-h-screen sm:ml-16 pb-20">
                 <Head>
@@ -151,21 +151,16 @@ const Home: React.FC = () => {
                 </Head>
 
                 <main className="flex-grow container mx-auto px-4 py-8">
-                    <div className={`flex justify-between items-center mb-8 pb-4 border-b ${theme === 'dark' ? 'border-gray-700' : 'border-gray-300'}`}>
+                    <div className={`flex justify-between items-center mb-8 pb-4 border-b ${getThemedClass('border-gray-700', 'border-gray-300')}`}>
                         <div className="flex items-center">
                             <Image src={Logo} alt="Logo" width={48} height={48} className="mr-4" />
                             <div>
                                 <h1 className="text-4xl font-bold">
-                                    <span className="hidden sm:inline">
-                                        <span className={`${theme === 'dark' ? 'text-violet-400' : 'text-violet-600'}`}>T</span>est{' '}
-                                        <span className={`${theme === 'dark' ? 'text-violet-400' : 'text-violet-600'}`}>T</span>emplate{' '}
-                                        <span className={`${theme === 'dark' ? 'text-violet-400' : 'text-violet-600'}`}>F</span>actory
-                                    </span>
-                                    <span className="sm:hidden">
-                                        <span className={`${theme === 'dark' ? 'text-violet-400' : 'text-violet-600'}`}>TTF</span>
-                                    </span>
+                                    <span className={getThemedClass('text-violet-400', 'text-violet-600')}>T</span>est{' '}
+                                    <span className={getThemedClass('text-violet-400', 'text-violet-600')}>T</span>emplate{' '}
+                                    <span className={getThemedClass('text-violet-400', 'text-violet-600')}>F</span>actory
                                 </h1>
-                                <p className={`text-sm italic mt-2 ${theme === 'dark' ? 'text-violet-400' : 'text-violet-600'} hidden sm:block`}>
+                                <p className={`text-sm italic mt-2 ${getThemedClass('text-violet-400', 'text-violet-600')} hidden sm:block`}>
                                     Kickstart automation frameworks in just a few clicks
                                 </p>
                             </div>
@@ -204,7 +199,7 @@ const Home: React.FC = () => {
 
                 {showPreview && (
                     <div className={`preview-slide ${showPreview ? 'show' : ''} fixed inset-0 z-30 sm:ml-16 overflow-hidden`}>
-                        <div className="absolute inset-0 bg-black bg-opacity-50" onClick={() => setShowPreview(false)}></div>
+                        <div className={`absolute inset-0 ${getThemedClass('bg-black bg-opacity-50', 'bg-gray-300 bg-opacity-50')}`} onClick={() => setShowPreview(false)}></div>
                         <div className="absolute inset-x-0 bottom-0 h-full">
                             <Preview
                                 config={config}

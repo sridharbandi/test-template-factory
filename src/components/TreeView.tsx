@@ -1,7 +1,7 @@
 import React from 'react';
 import { TreeItem } from '../types';
 import { FolderIcon, DocumentIcon, ChevronRightIcon, ChevronDownIcon, FolderOpenIcon } from '@heroicons/react/24/outline';
-import { useTheme } from './ThemeProvider';
+import { useThemedStyles } from '../hooks/useThemedStyles';
 
 interface TreeViewProps {
     items: TreeItem[];
@@ -12,7 +12,7 @@ interface TreeViewProps {
 }
 
 const TreeView: React.FC<TreeViewProps> = ({ items, expandedFolders, selectedFile, onToggleFolder, onSelectFile }) => {
-    const { theme } = useTheme();
+    const { getThemedClass } = useThemedStyles();
 
     const renderTree = (items: TreeItem[], path: string = '') => {
         return items.map((item) => {
@@ -22,7 +22,7 @@ const TreeView: React.FC<TreeViewProps> = ({ items, expandedFolders, selectedFil
                 return (
                     <li key={currentPath}>
                         <div
-                            className={`flex items-center cursor-pointer ${theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-200'} p-1`}
+                            className={`flex items-center cursor-pointer ${getThemedClass('hover:bg-gray-700', 'hover:bg-gray-200')} p-1`}
                             onClick={() => onToggleFolder(currentPath)}
                         >
                             {isExpanded ? (
@@ -48,7 +48,7 @@ const TreeView: React.FC<TreeViewProps> = ({ items, expandedFolders, selectedFil
                 return (
                     <li
                         key={currentPath}
-                        className={`flex items-center cursor-pointer ${theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-200'} p-1 ${selectedFile === currentPath ? 'text-violet-400 font-bold' : ''}`}
+                        className={`flex items-center cursor-pointer ${getThemedClass('hover:bg-gray-700', 'hover:bg-gray-200')} p-1 ${selectedFile === currentPath ? 'text-violet-400 font-bold' : ''}`}
                         onClick={() => onSelectFile(currentPath, item.url)}
                     >
                         <DocumentIcon className="h-5 w-5 mr-2 text-violet-500" />

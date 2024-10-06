@@ -7,7 +7,6 @@ import { useFileContent } from '../hooks/useFileContent';
 import { useTreeData } from '../hooks/useTreeData';
 import { useExpandedFolders } from '../hooks/useExpandedFolders';
 import Button from './Button';
-import { downloadFile, copyToClipboard } from '../utils/fileUtils';
 import { useThemedStyles } from '../hooks/useThemedStyles';
 import { useFileOperations } from '../hooks/useFileOperations';
 

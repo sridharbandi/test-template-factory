@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTheme } from './ThemeProvider';
+import { useThemedStyles } from '../hooks/useThemedStyles';
 
 interface RadioGroupProps {
     label: string;
@@ -9,13 +9,13 @@ interface RadioGroupProps {
 }
 
 const RadioGroup: React.FC<RadioGroupProps> = ({ label, options, selectedOption, onChange }) => {
-    const { theme } = useTheme();
+    const { getThemedClass } = useThemedStyles();
     return (
-        <div className={`mb-4 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>
+        <div className={`mb-4 ${getThemedClass('text-gray-100', 'text-gray-900')}`}>
             <label className="block mb-2 font-bold">{label}</label>
             {options.map((option) => (
                 <div key={option} className="mb-2">
-                    <label className={`inline-flex items-center cursor-pointer ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
+                    <label className={`inline-flex items-center cursor-pointer ${getThemedClass('text-gray-300', 'text-gray-700')}`}>
                         <input
                             type="radio"
                             className="hidden"

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTheme } from './ThemeProvider';
+import { useThemedStyles } from '../hooks/useThemedStyles';
 
 interface IconButtonProps {
     onClick: () => void;
@@ -8,11 +8,11 @@ interface IconButtonProps {
 }
 
 const IconButton: React.FC<IconButtonProps> = ({ onClick, title, icon }) => {
-    const { theme } = useTheme();
+    const { getThemedClass } = useThemedStyles();
     return (
         <button
             onClick={onClick}
-            className={`p-2 rounded-full ${theme === 'dark' ? 'text-violet-500 hover:bg-violet-500 hover:text-white' : 'text-violet-600 hover:bg-violet-600 hover:text-white'}`}
+            className={`p-2 rounded-full ${getThemedClass('text-violet-500 hover:bg-violet-500 hover:text-white', 'text-violet-600 hover:bg-violet-600 hover:text-white')}`}
             title={title}
         >
             {icon}
