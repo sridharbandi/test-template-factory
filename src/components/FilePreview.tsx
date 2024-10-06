@@ -4,6 +4,9 @@ import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import ReactMarkdown from 'react-markdown';
 import { useTheme } from './ThemeProvider';
 import { ClipboardIcon, ArrowDownTrayIcon } from '@heroicons/react/24/solid';
+import { getLanguage } from '../utils/languageUtils';
+import { usePreviewContent } from '../hooks/usePreviewContent';
+import IconButton from './IconButton';
 
 interface FilePreviewProps {
     selectedFile: string | null;
@@ -14,24 +17,7 @@ interface FilePreviewProps {
 
 const FilePreview: React.FC<FilePreviewProps> = ({ selectedFile, fileContent, onCopyToClipboard, onDownloadFile }) => {
     const { theme } = useTheme();
-
-    const getLanguage = (fileName: string): string => {
-        const extension = fileName.split('.').pop()?.toLowerCase();
-        switch (extension) {
-            case 'js': return 'javascript';
-            case 'ts': return 'typescript';
-            case 'jsx': return 'jsx';
-            case 'tsx': return 'tsx';
-            case 'html': return 'html';
-            case 'css': return 'css';
-            case 'json': return 'json';
-            case 'xml': return 'xml';
-            case 'md': return 'markdown';
-            case 'py': return 'python';
-            case 'java': return 'java';
-            default: return 'text';
-        }
-    };
+    const { language, isMarkdown } = usePreviewContent(selectedFile, fileContent);
 
     return (
         <>
@@ -39,20 +25,16 @@ const FilePreview: React.FC<FilePreviewProps> = ({ selectedFile, fileContent, on
                 <h3 className="py-2 text-lg font-medium">Preview</h3>
                 {selectedFile && (
                     <div className="flex space-x-2">
-                        <button
+                        <IconButton
                             onClick={onCopyToClipboard}
-                            className={`p-2 rounded-full ${theme === 'dark' ? 'text-violet-500 hover:bg-violet-500 hover:text-white' : 'text-violet-600 hover:bg-violet-600 hover:text-white'}`}
                             title="Copy to Clipboard"
-                        >
-                            <ClipboardIcon className="h-7 w-7" />
-                        </button>
-                        <button
+                            icon={<ClipboardIcon className="h-7 w-7" />}
+                        />
+                        <IconButton
                             onClick={onDownloadFile}
-                            className={`p-2 rounded-full ${theme === 'dark' ? 'text-violet-500 hover:bg-violet-500 hover:text-white' : 'text-violet-600 hover:bg-violet-600 hover:text-white'}`}
                             title="Download File"
-                        >
-                            <ArrowDownTrayIcon className="h-7 w-7" />
-                        </button>
+                            icon={<ArrowDownTrayIcon className="h-7 w-7" />}
+                        />
                     </div>
                 )}
             </div>
@@ -64,7 +46,7 @@ const FilePreview: React.FC<FilePreviewProps> = ({ selectedFile, fileContent, on
                         </div>
                     ) : (
                         <SyntaxHighlighter
-                            language={getLanguage(selectedFile)}
+                            language={language}
                             style={theme === 'dark' ? vscDarkPlus : undefined}
                             showLineNumbers={true}
                             wrapLines={true}
