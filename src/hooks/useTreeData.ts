@@ -4,12 +4,14 @@ import { ProjectConfig, TreeItem } from '../types';
 export const useTreeData = (config: ProjectConfig) => {
     const [treeData, setTreeData] = useState<TreeItem[]>([]);
     const [error, setError] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         fetchRepoTree(config);
     }, [config]);
 
     const fetchRepoTree = async (config: ProjectConfig) => {
+        setIsLoading(true);
         try {
             const response = await fetch(`/api/github-api?action=tree&tool=${config.tool}&language=${config.language}&build=${config.buildTool}&runner=${config.runner}`);
             
@@ -24,6 +26,8 @@ export const useTreeData = (config: ProjectConfig) => {
         } catch (error) {
             console.error('Error fetching repo tree:', error);
             setError('Failed to fetch repository tree. Please try again.');
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -34,7 +38,7 @@ export const useTreeData = (config: ProjectConfig) => {
             const parts = item.path.split('/');
             let current = root;
 
-            parts.forEach((part, index) => {
+            parts.forEach((part: string, index: number) => {
                 let existingItem = current.find(i => i.path === part);
                 if (!existingItem) {
                     existingItem = {
@@ -54,5 +58,5 @@ export const useTreeData = (config: ProjectConfig) => {
         return root;
     };
 
-    return { treeData, error };
+    return { treeData, error, isLoading };
 };
