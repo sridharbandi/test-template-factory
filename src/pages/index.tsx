@@ -10,6 +10,7 @@ import Logo from '../assets/logo.svg';
 import Image from 'next/image';
 import SideBar from '../components/SideBar';
 import { useThemedStyles } from '../hooks/useThemedStyles';
+import Header from '../components/Header';
 
 const Home: React.FC = () => {
     const [config, setConfig] = useState<ProjectConfig>({
@@ -151,22 +152,7 @@ const Home: React.FC = () => {
                 </Head>
 
                 <main className="flex-grow container mx-auto px-4 py-8">
-                    <div className={`flex justify-between items-center mb-8 pb-4 border-b ${getThemedClass('border-gray-700', 'border-gray-300')}`}>
-                        <div className="flex items-center">
-                            <Image src={Logo} alt="Logo" width={48} height={48} className="mr-4" />
-                            <div>
-                                <h1 className="text-4xl font-bold">
-                                    <span className={getThemedClass('text-violet-400', 'text-violet-600')}>T</span>est{' '}
-                                    <span className={getThemedClass('text-violet-400', 'text-violet-600')}>T</span>emplate{' '}
-                                    <span className={getThemedClass('text-violet-400', 'text-violet-600')}>F</span>actory
-                                </h1>
-                                <p className={`text-sm italic mt-2 ${getThemedClass('text-violet-400', 'text-violet-600')} hidden sm:block`}>
-                                    Kickstart automation frameworks in just a few clicks
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
+                    <Header />
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                         <RadioGroup
                             label="Tool"
