@@ -1,7 +1,5 @@
 import React from 'react';
 import { useThemedStyles } from '../hooks/useThemedStyles';
-import Image from 'next/image';
-import Logo from '../assets/logo.svg';
 import Header from './Header';
 
 interface BurgerMenuContentProps {

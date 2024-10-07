@@ -7,6 +7,7 @@ import { usePreviewContent } from '../hooks/usePreviewContent';
 import IconButton from './IconButton';
 import { useThemedStyles } from '../hooks/useThemedStyles';
 import Skeleton from './Skeleton';
+import rehypeRaw from 'rehype-raw';
 
 interface FilePreviewProps {
     selectedFile: string | null;
@@ -48,8 +49,8 @@ const FilePreview: React.FC<FilePreviewProps> = ({ selectedFile, fileContent, on
                     </div>
                 ) : selectedFile ? (
                     isMarkdown ? (
-                        <div className={`prose ${getThemedClass('prose-invert', '')} max-w-none`}>
-                            <ReactMarkdown>{fileContent || ''}</ReactMarkdown>
+                        <div className={`markdown-body ${getThemedClass('dark', 'light')}`}>
+                            <ReactMarkdown rehypePlugins={[rehypeRaw]}>{fileContent || ''}</ReactMarkdown>
                         </div>
                     ) : (
                         <SyntaxHighlighter

@@ -6,11 +6,10 @@ import { ProjectConfig } from '../types';
 import { AUTOMATION_TOOLS, PROGRAMMING_LANGUAGES, BUILD_TOOLS, RUNNERS } from '../utils/constants';
 import Preview from '../components/Preview';
 import { useTheme } from '../components/ThemeProvider';
-import Logo from '../assets/logo.svg';
-import Image from 'next/image';
 import SideBar from '../components/SideBar';
 import { useThemedStyles } from '../hooks/useThemedStyles';
 import Header from '../components/Header';
+import Favicon from '../assets/favicon.ico';
 
 const Home: React.FC = () => {
     const [config, setConfig] = useState<ProjectConfig>({
@@ -144,11 +143,7 @@ const Home: React.FC = () => {
             <div className="flex-1 min-h-screen sm:ml-16 pb-20">
                 <Head>
                     <title>Test Template Factory</title>
-                    <link rel="icon" href="/favicon.ico" />
-                    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-                    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-                    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-                    <link rel="manifest" href="/site.webmanifest" />
+                    <link rel="icon" href={Favicon.src} type="image/x-icon" />
                 </Head>
 
                 <main className="flex-grow container mx-auto px-4 py-8">
