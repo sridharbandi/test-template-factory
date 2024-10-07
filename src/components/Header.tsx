@@ -7,9 +7,9 @@ const Header: React.FC = () => {
     const { getThemedClass } = useThemedStyles();
 
     return (
-        <div className={`flex justify-between items-center mb-8 pb-4 border-b ${getThemedClass('border-gray-700', 'border-gray-300')}`}>
+        <header className={`flex justify-between items-center mb-8 pb-4 border-b ${getThemedClass('border-gray-700', 'border-gray-300')}`}>
             <div className="flex items-center">
-                <Image src={Logo} alt="Logo" width={48} height={48} className="mr-4" />
+                <Image src={Logo} alt="Test Template Factory Logo" width={48} height={48} className="mr-4" />
                 <div>
                     <h1 className="text-4xl font-bold">
                         <span className="hidden sm:inline">
@@ -26,7 +26,7 @@ const Header: React.FC = () => {
                     </p>
                 </div>
             </div>
-        </div>
+        </header>
     );
 };
 

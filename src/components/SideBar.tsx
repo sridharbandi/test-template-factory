@@ -39,8 +39,8 @@ const SideBarContent: React.FC<SideBarContentProps> = ({ toggleTheme, toggleBurg
 
     return (
         <div className={`hidden sm:flex fixed left-0 top-0 h-full w-16 flex-col items-center py-8 ${getThemedClass('bg-gray-800', 'bg-gray-200')} z-50`}>
-            <SideBarButton onClick={toggleBurgerMenu} icon={showBurgerMenu ? <XMarkIcon className="h-10 w-10" /> : <Bars3Icon className="h-10 w-10" />} />
-            <SideBarButton onClick={toggleTheme} icon={getThemedClass(<SunIcon className="h-10 w-10" />, <MoonIcon className="h-8 w-8" />)} />
+            <SideBarButton onClick={toggleBurgerMenu} icon={showBurgerMenu ? <XMarkIcon className="h-10 w-10" /> : <Bars3Icon className="h-10 w-10" />} ariaLabel={showBurgerMenu ? "Close menu" : "Open menu"} />
+            <SideBarButton onClick={toggleTheme} icon={getThemedClass(<SunIcon className="h-10 w-10" />, <MoonIcon className="h-8 w-8" />)} ariaLabel="Toggle theme" />
             <SideBarLink href="https://github.com/yourusername/your-repo" icon={<FaGithub className="h-10 w-10" />} />
         </div>
     );
@@ -60,10 +60,11 @@ const BurgerMenuSlide: React.FC<BurgerMenuSlideProps> = ({ showBurgerMenu, onClo
 interface SideBarButtonProps {
     onClick: () => void;
     icon: React.ReactNode;
+    ariaLabel: string;
 }
 
-const SideBarButton: React.FC<SideBarButtonProps> = ({ onClick, icon }) => (
-    <button className="mb-8" onClick={onClick}>
+const SideBarButton: React.FC<SideBarButtonProps> = ({ onClick, icon, ariaLabel }) => (
+    <button className="mb-8" onClick={onClick} aria-label={ariaLabel}>
         {icon}
     </button>
 );

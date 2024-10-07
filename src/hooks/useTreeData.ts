@@ -12,6 +12,7 @@ export const useTreeData = (config: ProjectConfig) => {
 
     const fetchRepoTree = async (config: ProjectConfig) => {
         setIsLoading(true);
+        setError(null);
         try {
             const response = await fetch(`/api/github-api?action=tree&tool=${config.tool}&language=${config.language}&build=${config.buildTool}&runner=${config.runner}`);
             
@@ -22,7 +23,6 @@ export const useTreeData = (config: ProjectConfig) => {
             const data = await response.json();
             const processedData = processTreeData(data.tree);
             setTreeData(processedData);
-            setError(null);
         } catch (error) {
             console.error('Error fetching repo tree:', error);
             setError('Failed to fetch repository tree. Please try again.');

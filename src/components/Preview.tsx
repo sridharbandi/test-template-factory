@@ -26,7 +26,6 @@ const Preview: React.FC<PreviewProps> = ({ config, onClose, onDownload }) => {
     const { expandedFolders, toggleFolder } = useExpandedFolders();
     const { selectedFile, handleSelectFile, handleCopyToClipboard, handleDownloadFile } = useFileOperations();
     const { getThemedClass } = useThemedStyles();
-    const [error, setError] = useState<string | null>(null);
 
     return (
         <div className={`h-screen flex flex-col ${getThemedClass('bg-gray-800 text-gray-100', 'bg-white text-gray-900')}`}>
@@ -47,6 +46,7 @@ const Preview: React.FC<PreviewProps> = ({ config, onClose, onDownload }) => {
                         onCopyToClipboard={() => handleCopyToClipboard(fileContent)}
                         onDownloadFile={() => handleDownloadFile(fileContent, selectedFile)}
                         isLoading={isFileLoading}
+                        error={fileError}
                     />
                 </div>
             </div>
@@ -99,6 +99,7 @@ interface PreviewContentProps {
     onCopyToClipboard: () => void;
     onDownloadFile: () => void;
     isLoading: boolean;
+    error: string | null;
 }
 
 const PreviewContent: React.FC<PreviewContentProps> = ({
@@ -107,6 +108,7 @@ const PreviewContent: React.FC<PreviewContentProps> = ({
     onCopyToClipboard,
     onDownloadFile,
     isLoading,
+    error,
 }) => {
     const { getThemedClass } = useThemedStyles();
 
@@ -118,6 +120,7 @@ const PreviewContent: React.FC<PreviewContentProps> = ({
                 onCopyToClipboard={onCopyToClipboard}
                 onDownloadFile={onDownloadFile}
                 isLoading={isLoading}
+                error={error}
             />
         </div>
     );
