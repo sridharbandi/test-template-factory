@@ -10,7 +10,7 @@ interface FooterProps {
 const Footer: React.FC<FooterProps> = ({ onGenerate, onPreview }) => {
     const { getThemedClass } = useThemedStyles();
     return (
-        <footer className={`fixed bottom-0 left-0 sm:left-16 right-0 ${getThemedClass('bg-gray-800', 'bg-gray-200')} p-4`}>
+        <footer className={`fixed bottom-0 left-0 right-0 ${getThemedClass('bg-gray-800', 'bg-gray-200')} p-4`}>
             <div className="container mx-auto flex justify-center items-center space-x-4">
                 <Button onClick={onPreview}>Preview</Button>
                 <Button onClick={onGenerate}>Generate Template</Button>
