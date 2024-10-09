@@ -190,9 +190,9 @@ const Home: React.FC = () => {
                 <Footer onGenerate={handleGenerate} onPreview={handlePreview} />
 
                 {showPreview && (
-                    <div className={`preview-slide ${showPreview ? 'show' : ''} fixed inset-0 z-30 overflow-hidden`}>
-                        <div className={`absolute inset-0 ${getThemedClass('bg-black bg-opacity-50', 'bg-gray-300 bg-opacity-50')}`} onClick={() => setShowPreview(false)}></div>
-                        <div className="absolute inset-x-0 bottom-0 h-full">
+                    <div className="fixed inset-0 z-50 flex flex-col">
+                        <div className={`absolute inset-0 ${getThemedClass('bg-black bg-opacity-50', 'bg-gray-300 bg-opacity-50')}`} onClick={handleClosePreview}></div>
+                        <div className="relative flex-grow overflow-hidden">
                             <Preview
                                 config={config}
                                 onClose={handleClosePreview}
