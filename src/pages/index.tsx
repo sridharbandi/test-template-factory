@@ -6,7 +6,6 @@ import { ProjectConfig } from '../types';
 import { AUTOMATION_TOOLS, PROGRAMMING_LANGUAGES, BUILD_TOOLS, RUNNERS } from '../utils/constants';
 import Preview from '../components/Preview';
 import { useTheme } from '../components/ThemeProvider';
-import SideBar from '../components/SideBar';
 import { useThemedStyles } from '../hooks/useThemedStyles';
 import Header from '../components/Header';
 import Favicon from '../assets/favicon.ico';
@@ -21,6 +20,9 @@ const Home: React.FC = () => {
     const { theme, toggleTheme } = useTheme();
     const { getThemedClass } = useThemedStyles();
     const [showPreview, setShowPreview] = useState(false);
+    const [showBurgerMenu, setShowBurgerMenu] = useState(false);
+
+    const toggleBurgerMenu = () => setShowBurgerMenu(!showBurgerMenu);
 
     useEffect(() => {
         const savedConfig = localStorage.getItem('projectConfig');
@@ -139,15 +141,14 @@ const Home: React.FC = () => {
 
     return (
         <div className={`flex ${getThemedClass('bg-gray-900 text-gray-100', 'bg-white text-gray-900')}`}>
-            <SideBar toggleTheme={toggleTheme} />
-            <div className="flex-1 min-h-screen sm:ml-16 pb-20">
+            <div className="flex-1 min-h-screen pb-20">
                 <Head>
                     <title>Test Template Factory</title>
                     <link rel="icon" href={Favicon.src} type="image/x-icon" />
                 </Head>
 
                 <main className="flex-grow container mx-auto px-4 py-8">
-                    <Header />
+                    <Header toggleBurgerMenu={toggleBurgerMenu} showBurgerMenu={showBurgerMenu} toggleTheme={toggleTheme} />
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                         <RadioGroup
                             label="Tool"
@@ -179,7 +180,7 @@ const Home: React.FC = () => {
                 <Footer onGenerate={handleGenerate} onPreview={handlePreview} />
 
                 {showPreview && (
-                    <div className={`preview-slide ${showPreview ? 'show' : ''} fixed inset-0 z-30 sm:ml-16 overflow-hidden`}>
+                    <div className={`preview-slide ${showPreview ? 'show' : ''} fixed inset-0 z-30 overflow-hidden`}>
                         <div className={`absolute inset-0 ${getThemedClass('bg-black bg-opacity-50', 'bg-gray-300 bg-opacity-50')}`} onClick={() => setShowPreview(false)}></div>
                         <div className="absolute inset-x-0 bottom-0 h-full">
                             <Preview
