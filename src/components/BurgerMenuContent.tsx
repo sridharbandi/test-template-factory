@@ -12,9 +12,11 @@ interface BurgerMenuContentProps {
 const BurgerMenuContent: React.FC<BurgerMenuContentProps> = ({ onClose, toggleTheme }) => {
     const { getThemedClass } = useThemedStyles();
 
+    const iconClass = `${getThemedClass('text-violet-400 hover:text-violet-300', 'text-violet-600 hover:text-violet-500')} transition-colors duration-200`;
+
     return (
         <div className={`fixed inset-0 z-50 ${getThemedClass('bg-gray-900 text-gray-100', 'bg-white text-gray-900')} overflow-y-auto`}>
-            <div className="min-h-screen py-8 px-4">
+            <div className="min-h-screen p-4">
                 <div className="container mx-auto">
                     <header className={`flex justify-between items-center mb-8 pb-4 border-b ${getThemedClass('border-gray-700', 'border-gray-300')}`}>
                         <div className="flex items-center">
@@ -38,14 +40,11 @@ const BurgerMenuContent: React.FC<BurgerMenuContentProps> = ({ onClose, toggleTh
                         <button 
                             onClick={onClose}
                             aria-label="Close menu"
+                            className={iconClass}
                         >
                             <XMarkIcon className="h-10 w-10" />
                         </button>
                     </header>
-                    <button onClick={toggleTheme} className="mb-4 flex items-center">
-                        {getThemedClass(<SunIcon className="h-6 w-6 mr-2" />, <MoonIcon className="h-6 w-6 mr-2" />)}
-                        Toggle Theme
-                    </button>
                     <div className="prose max-w-none">
                         <p className="mb-8">
                             Test Template Factory is a powerful tool designed to streamline the process of setting up test automation frameworks.

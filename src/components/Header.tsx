@@ -16,6 +16,8 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ toggleBurgerMenu, showBurgerMenu, toggleTheme }) => {
     const { getThemedClass } = useThemedStyles();
 
+    const iconClass = `${getThemedClass('text-violet-400 hover:text-violet-300', 'text-violet-600 hover:text-violet-500')} transition-colors duration-200`;
+
     return (
         <>
             <header className={`flex justify-between items-center mb-8 pb-4 border-b ${getThemedClass('border-gray-700', 'border-gray-300')}`}>
@@ -42,7 +44,7 @@ const Header: React.FC<HeaderProps> = ({ toggleBurgerMenu, showBurgerMenu, toggl
                         href="https://github.com/yourusername/your-repo"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="mr-4"
+                        className={`mr-4 ${iconClass}`}
                         aria-label="GitHub repository"
                     >
                         <FaGithub className="h-10 w-10" />
@@ -50,13 +52,14 @@ const Header: React.FC<HeaderProps> = ({ toggleBurgerMenu, showBurgerMenu, toggl
                     <button 
                         onClick={toggleTheme}
                         aria-label="Toggle theme"
-                        className="mr-4"
+                        className={`mr-4 ${iconClass}`}
                     >
                         {getThemedClass(<SunIcon className="h-10 w-10" />, <MoonIcon className="h-10 w-10" />)}
                     </button>
                     <button 
                         onClick={toggleBurgerMenu}
                         aria-label={showBurgerMenu ? "Close menu" : "Open menu"}
+                        className={iconClass}
                     >
                         {showBurgerMenu ? <XMarkIcon className="h-10 w-10" /> : <Bars3Icon className="h-10 w-10" />}
                     </button>

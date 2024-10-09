@@ -21,8 +21,12 @@ const Home: React.FC = () => {
     const { getThemedClass } = useThemedStyles();
     const [showPreview, setShowPreview] = useState(false);
     const [showBurgerMenu, setShowBurgerMenu] = useState(false);
+    const [isOverflowHidden, setIsOverflowHidden] = useState(false);
 
-    const toggleBurgerMenu = () => setShowBurgerMenu(!showBurgerMenu);
+    const toggleBurgerMenu = () => {
+        setShowBurgerMenu(!showBurgerMenu);
+        setIsOverflowHidden(!showBurgerMenu);
+    };
 
     useEffect(() => {
         const savedConfig = localStorage.getItem('projectConfig');
@@ -133,21 +137,27 @@ const Home: React.FC = () => {
 
     const handlePreview = () => {
         setShowPreview(true);
+        setIsOverflowHidden(true);
     };
 
     const handleDownload = () => {
         handleGenerate();
     };
 
+    const handleClosePreview = () => {
+        setShowPreview(false);
+        setIsOverflowHidden(false);
+    };
+
     return (
-        <div className={`flex ${getThemedClass('bg-gray-900 text-gray-100', 'bg-white text-gray-900')}`}>
+        <div className={`flex ${getThemedClass('bg-gray-900 text-gray-100', 'bg-white text-gray-900')} ${isOverflowHidden ? 'overflow-hidden h-screen' : ''}`}>
             <div className="flex-1 min-h-screen pb-20">
                 <Head>
                     <title>Test Template Factory</title>
                     <link rel="icon" href={Favicon.src} type="image/x-icon" />
                 </Head>
 
-                <main className="flex-grow container mx-auto px-4 py-8">
+                <main className="flex-grow container mx-auto p-4">
                     <Header toggleBurgerMenu={toggleBurgerMenu} showBurgerMenu={showBurgerMenu} toggleTheme={toggleTheme} />
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                         <RadioGroup
@@ -185,7 +195,7 @@ const Home: React.FC = () => {
                         <div className="absolute inset-x-0 bottom-0 h-full">
                             <Preview
                                 config={config}
-                                onClose={() => setShowPreview(false)}
+                                onClose={handleClosePreview}
                                 onDownload={handleDownload}
                             />
                         </div>
