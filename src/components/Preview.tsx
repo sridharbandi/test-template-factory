@@ -28,27 +28,25 @@ const Preview: React.FC<PreviewProps> = ({ config, onClose, onDownload }) => {
     const { getThemedClass } = useThemedStyles();
 
     return (
-        <div className={`h-screen flex flex-col ${getThemedClass('bg-gray-800 text-gray-100', 'bg-white text-gray-900')}`}>
-            <div className="flex-grow overflow-hidden">
-                <div className="flex h-full">
-                    <PreviewSidebar
-                        treeData={treeData}
-                        treeError={treeError}
-                        expandedFolders={expandedFolders}
-                        selectedFile={selectedFile}
-                        onToggleFolder={toggleFolder}
-                        onSelectFile={(path: string, url: string) => handleSelectFile(path, url, fetchFileContent)}
-                        isLoading={isTreeLoading}
-                    />
-                    <PreviewContent
-                        selectedFile={selectedFile}
-                        fileContent={fileContent}
-                        onCopyToClipboard={() => handleCopyToClipboard(fileContent)}
-                        onDownloadFile={() => handleDownloadFile(fileContent, selectedFile)}
-                        isLoading={isFileLoading}
-                        error={fileError}
-                    />
-                </div>
+        <div className={`flex flex-col ${getThemedClass('bg-gray-800 text-gray-100', 'bg-white text-gray-900')} h-full`}>
+            <div className="flex-grow overflow-hidden flex">
+                <PreviewSidebar
+                    treeData={treeData}
+                    treeError={treeError}
+                    expandedFolders={expandedFolders}
+                    selectedFile={selectedFile}
+                    onToggleFolder={toggleFolder}
+                    onSelectFile={(path: string, url: string) => handleSelectFile(path, url, fetchFileContent)}
+                    isLoading={isTreeLoading}
+                />
+                <PreviewContent
+                    selectedFile={selectedFile}
+                    fileContent={fileContent}
+                    onCopyToClipboard={() => handleCopyToClipboard(fileContent)}
+                    onDownloadFile={() => handleDownloadFile(fileContent, selectedFile)}
+                    isLoading={isFileLoading}
+                    error={fileError}
+                />
             </div>
             <PreviewFooter onClose={onClose} onDownload={onDownload} />
         </div>
@@ -135,9 +133,12 @@ const PreviewFooter: React.FC<PreviewFooterProps> = ({ onClose, onDownload }) =>
     const { getThemedClass } = useThemedStyles();
 
     return (
-        <footer className={`${getThemedClass('bg-gray-800', 'bg-gray-200')} p-4 flex justify-center space-x-4`}>
-            <Button onClick={onClose}>Close</Button>
-            <Button onClick={onDownload}>Download</Button>
+        //<footer className={`${getThemedClass('bg-gray-800', 'bg-gray-200')} p-4 flex justify-center space-x-4 mt-auto`}>
+        <footer className={`${getThemedClass('bg-gray-800', 'bg-gray-200')} fixed bottom-0 left-0 right-0 p-4`}>
+            <div className="container mx-auto flex justify-center items-center space-x-4">
+                <Button onClick={onClose}>Close</Button>
+                <Button onClick={onDownload}>Download</Button>
+            </div>
         </footer>
     );
 };

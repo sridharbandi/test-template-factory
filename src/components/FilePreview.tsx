@@ -22,7 +22,7 @@ const FilePreview: React.FC<FilePreviewProps> = ({ selectedFile, fileContent, on
     const { language, isMarkdown } = usePreviewContent(selectedFile, fileContent);
 
     return (
-        <>
+        <div className="flex flex-col h-full">
             <div className={`flex justify-between items-center mb-4 pb-2 border-b ${getThemedClass('border-gray-700', 'border-gray-300')}`}>
                 <h3 className="py-2 text-lg font-medium">Preview</h3>
                 {selectedFile && !isLoading && (
@@ -40,7 +40,7 @@ const FilePreview: React.FC<FilePreviewProps> = ({ selectedFile, fileContent, on
                     </div>
                 )}
             </div>
-            <div className="overflow-auto max-h-[calc(100vh-12rem)]">
+            <div className="overflow-auto flex-grow">
                 {isLoading ? (
                     <div className="space-y-2">
                         {[...Array(15)].map((_, index) => (
@@ -80,7 +80,7 @@ const FilePreview: React.FC<FilePreviewProps> = ({ selectedFile, fileContent, on
                     <p>Select a file to preview</p>
                 )}
             </div>
-        </>
+        </div>
     );
 };
 
