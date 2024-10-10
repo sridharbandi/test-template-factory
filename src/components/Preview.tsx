@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PreviewProps } from '../types';
 import TreeView from './TreeView';
 import FilePreview from './FilePreview';
@@ -18,6 +18,7 @@ interface PreviewSidebarProps {
     onToggleFolder: any;
     onSelectFile: any;
     isLoading: boolean;
+    isMobile: boolean;
 }
 
 const Preview: React.FC<PreviewProps> = ({ config, onClose, onDownload }) => {
@@ -26,10 +27,20 @@ const Preview: React.FC<PreviewProps> = ({ config, onClose, onDownload }) => {
     const { expandedFolders, toggleFolder } = useExpandedFolders();
     const { selectedFile, handleSelectFile, handleCopyToClipboard, handleDownloadFile } = useFileOperations();
     const { getThemedClass } = useThemedStyles();
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
 
     return (
-        <div className={`flex flex-col ${getThemedClass('bg-gray-800 text-gray-100', 'bg-white text-gray-900')} h-full`}>
-            <div className="flex-grow overflow-hidden flex">
+        <div className={`flex flex-col ${getThemedClass('bg-gray-800 text-gray-100', 'bg-white text-gray-900')} h-full ${isMobile ? 'fixed inset-0 overflow-hidden' : ''}`}>
+            <div className="flex-grow overflow-hidden flex flex-col md:flex-row">
                 <PreviewSidebar
                     treeData={treeData}
                     treeError={treeError}
@@ -38,6 +49,7 @@ const Preview: React.FC<PreviewProps> = ({ config, onClose, onDownload }) => {
                     onToggleFolder={toggleFolder}
                     onSelectFile={(path: string, url: string) => handleSelectFile(path, url, fetchFileContent)}
                     isLoading={isTreeLoading}
+                    isMobile={isMobile}
                 />
                 <PreviewContent
                     selectedFile={selectedFile}
@@ -46,9 +58,10 @@ const Preview: React.FC<PreviewProps> = ({ config, onClose, onDownload }) => {
                     onDownloadFile={() => handleDownloadFile(fileContent, selectedFile)}
                     isLoading={isFileLoading}
                     error={fileError}
+                    isMobile={isMobile}
                 />
             </div>
-            <PreviewFooter onClose={onClose} onDownload={onDownload} />
+            <PreviewFooter onClose={onClose} onDownload={onDownload} isMobile={isMobile} />
         </div>
     );
 };
@@ -61,8 +74,47 @@ const PreviewSidebar: React.FC<PreviewSidebarProps> = ({
     onToggleFolder,
     onSelectFile,
     isLoading,
+    isMobile,
 }) => {
     const { getThemedClass } = useThemedStyles();
+
+    const flattenTree = (items: TreeItem[], prefix = ''): { path: string; url: string }[] => {
+        return items.reduce((acc, item) => {
+            const path = prefix ? `${prefix}/${item.path}` : item.path;
+            if (item.type === 'blob') {
+                acc.push({ path, url: item.url });
+            } else if (item.children) {
+                acc.push(...flattenTree(item.children, path));
+            }
+            return acc;
+        }, [] as { path: string; url: string }[]);
+    };
+
+    const flatFiles = flattenTree(treeData);
+
+    if (isMobile) {
+        return (
+            <div className={`sticky top-0 z-10 w-full ${getThemedClass('bg-gray-900', 'bg-white')} p-2`}>
+                <select
+                    className={`w-full p-2 ${getThemedClass('bg-gray-800 text-gray-100', 'bg-white text-gray-900')} border ${getThemedClass('border-gray-700', 'border-gray-300')} rounded`}
+                    value={selectedFile || ''}
+                    onChange={(e) => {
+                        const selected = flatFiles.find(file => file.path === e.target.value);
+                        if (selected) {
+                            onSelectFile(selected.path, selected.url);
+                        }
+                    }}
+                >
+                    <option value="">Select a file</option>
+                    {flatFiles.map((file) => (
+                        <option key={file.path} value={file.path}>
+                            {file.path}
+                        </option>
+                    ))}
+                </select>
+            </div>
+        );
+    }
 
     return (
         <div className={`w-1/3 ${getThemedClass('bg-gray-900', 'bg-white')} p-6 overflow-auto border-r ${getThemedClass('border-gray-700', 'border-gray-300')}`}>
@@ -98,6 +150,7 @@ interface PreviewContentProps {
     onDownloadFile: () => void;
     isLoading: boolean;
     error: string | null;
+    isMobile: boolean;
 }
 
 const PreviewContent: React.FC<PreviewContentProps> = ({
@@ -107,11 +160,12 @@ const PreviewContent: React.FC<PreviewContentProps> = ({
     onDownloadFile,
     isLoading,
     error,
+    isMobile,
 }) => {
     const { getThemedClass } = useThemedStyles();
 
     return (
-        <div className={`w-2/3 ${getThemedClass('bg-gray-900', 'bg-white')} p-6 overflow-auto`}>
+        <div className={`w-full md:w-2/3 ${getThemedClass('bg-gray-900', 'bg-white')} p-6 overflow-auto`}>
             <FilePreview
                 selectedFile={selectedFile}
                 fileContent={fileContent}
@@ -119,6 +173,7 @@ const PreviewContent: React.FC<PreviewContentProps> = ({
                 onDownloadFile={onDownloadFile}
                 isLoading={isLoading}
                 error={error}
+                isMobile={isMobile}
             />
         </div>
     );
@@ -127,14 +182,14 @@ const PreviewContent: React.FC<PreviewContentProps> = ({
 interface PreviewFooterProps {
     onClose: () => void;
     onDownload: () => void;
+    isMobile: boolean;
 }
 
-const PreviewFooter: React.FC<PreviewFooterProps> = ({ onClose, onDownload }) => {
+const PreviewFooter: React.FC<PreviewFooterProps> = ({ onClose, onDownload, isMobile }) => {
     const { getThemedClass } = useThemedStyles();
 
     return (
-        //<footer className={`${getThemedClass('bg-gray-800', 'bg-gray-200')} p-4 flex justify-center space-x-4 mt-auto`}>
-        <footer className={`${getThemedClass('bg-gray-800', 'bg-gray-200')} fixed bottom-0 left-0 right-0 p-4`}>
+        <footer className={`${getThemedClass('bg-gray-800', 'bg-gray-200')} ${isMobile ? 'fixed bottom-0 left-0 right-0' : ''} p-4`}>
             <div className="container mx-auto flex justify-center items-center space-x-4">
                 <Button onClick={onClose}>Close</Button>
                 <Button onClick={onDownload}>Download</Button>

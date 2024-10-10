@@ -15,32 +15,35 @@ interface FilePreviewProps {
     onCopyToClipboard: () => void;
     onDownloadFile: () => void;
     isLoading: boolean;
+    isMobile: boolean;
 }
 
-const FilePreview: React.FC<FilePreviewProps> = ({ selectedFile, fileContent, onCopyToClipboard, onDownloadFile, isLoading }) => {
+const FilePreview: React.FC<FilePreviewProps> = ({ selectedFile, fileContent, onCopyToClipboard, onDownloadFile, isLoading, isMobile }) => {
     const { getThemedClass } = useThemedStyles();
     const { language, isMarkdown } = usePreviewContent(selectedFile, fileContent);
 
     return (
         <div className="flex flex-col h-full">
-            <div className={`flex justify-between items-center mb-4 pb-2 border-b ${getThemedClass('border-gray-700', 'border-gray-300')}`}>
-                <h3 className="py-2 text-lg font-medium">Preview</h3>
-                {selectedFile && !isLoading && (
-                    <div className="flex space-x-2">
-                        <IconButton
-                            onClick={onCopyToClipboard}
-                            title="Copy to Clipboard"
-                            icon={<ClipboardIcon className="h-7 w-7" />}
-                        />
-                        <IconButton
-                            onClick={onDownloadFile}
-                            title="Download File"
-                            icon={<ArrowDownTrayIcon className="h-7 w-7" />}
-                        />
-                    </div>
-                )}
-            </div>
-            <div className="overflow-auto flex-grow">
+            {!isMobile && (
+                <div className={`flex justify-between items-center mb-4 pb-2 border-b ${getThemedClass('border-gray-700', 'border-gray-300')}`}>
+                    <h3 className="py-2 text-lg font-medium">Preview</h3>
+                    {selectedFile && !isLoading && (
+                        <div className="flex space-x-2">
+                            <IconButton
+                                onClick={onCopyToClipboard}
+                                title="Copy to Clipboard"
+                                icon={<ClipboardIcon className="h-7 w-7" />}
+                            />
+                            <IconButton
+                                onClick={onDownloadFile}
+                                title="Download File"
+                                icon={<ArrowDownTrayIcon className="h-7 w-7" />}
+                            />
+                        </div>
+                    )}
+                </div>
+            )}
+            <div className={`overflow-auto ${isMobile ? 'h-[calc(100vh-180px)]' : 'max-h-[calc(100vh-12rem)]'}`}>
                 {isLoading ? (
                     <div className="space-y-2">
                         {[...Array(15)].map((_, index) => (

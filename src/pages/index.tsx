@@ -192,7 +192,7 @@ const Home: React.FC = () => {
                 {showPreview && (
                     <div className="fixed inset-0 z-50 flex flex-col">
                         <div className={`absolute inset-0 ${getThemedClass('bg-black bg-opacity-50', 'bg-gray-300 bg-opacity-50')}`} onClick={handleClosePreview}></div>
-                        <div className="relative flex-grow overflow-hidden">
+                        <div className="relative flex-grow overflow-hidden h-full">
                             <Preview
                                 config={config}
                                 onClose={handleClosePreview}
