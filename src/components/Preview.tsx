@@ -165,7 +165,7 @@ const PreviewContent: React.FC<PreviewContentProps> = ({
     const { getThemedClass } = useThemedStyles();
 
     return (
-        <div className={`w-full md:w-2/3 ${getThemedClass('bg-gray-900', 'bg-white')} p-6 overflow-auto`}>
+        <div className={`w-full md:w-2/3 ${getThemedClass('bg-gray-900', 'bg-white')} ${isMobile ? 'py-6 px-2' : 'p-6'} overflow-auto`}>
             <FilePreview
                 selectedFile={selectedFile}
                 fileContent={fileContent}

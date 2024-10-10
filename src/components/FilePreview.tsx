@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import ReactMarkdown from 'react-markdown';
@@ -21,6 +21,25 @@ interface FilePreviewProps {
 const FilePreview: React.FC<FilePreviewProps> = ({ selectedFile, fileContent, onCopyToClipboard, onDownloadFile, isLoading, isMobile }) => {
     const { getThemedClass } = useThemedStyles();
     const { language, isMarkdown } = usePreviewContent(selectedFile, fileContent);
+    const [copied, setCopied] = useState(false);
+    const [showCopied, setShowCopied] = useState(false);
+
+    useEffect(() => {
+        let timer: NodeJS.Timeout;
+        if (copied) {
+            setShowCopied(true);
+            timer = setTimeout(() => {
+                setShowCopied(false);
+                setTimeout(() => setCopied(false), 300); // Wait for fade-out animation to complete
+            }, 1000);
+        }
+        return () => clearTimeout(timer);
+    }, [copied]);
+
+    const handleCopyToClipboard = () => {
+        onCopyToClipboard();
+        setCopied(true);
+    };
 
     return (
         <div className="flex flex-col h-full">
@@ -29,11 +48,20 @@ const FilePreview: React.FC<FilePreviewProps> = ({ selectedFile, fileContent, on
                     <h3 className="py-2 text-lg font-medium">Preview</h3>
                     {selectedFile && !isLoading && (
                         <div className="flex space-x-2">
-                            <IconButton
-                                onClick={onCopyToClipboard}
-                                title="Copy to Clipboard"
-                                icon={<ClipboardIcon className="h-7 w-7" />}
-                            />
+                            <div className="flex items-center space-x-2">
+                                <span
+                                    className={`text-sm text-violet-500 transition-opacity duration-300 ${showCopied ? 'opacity-100' : 'opacity-0'
+                                        }`}
+                                >
+                                    Copied
+                                </span>
+                                <IconButton
+                                    onClick={handleCopyToClipboard}
+                                    title="Copy to Clipboard"
+                                    icon={<ClipboardIcon className="h-7 w-7" />}
+                                />
+
+                            </div>
                             <IconButton
                                 onClick={onDownloadFile}
                                 title="Download File"
