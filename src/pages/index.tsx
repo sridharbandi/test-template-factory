@@ -189,18 +189,23 @@ const Home: React.FC = () => {
 
                 <Footer onGenerate={handleGenerate} onPreview={handlePreview} />
 
-                {showPreview && (
-                    <div className="fixed inset-0 z-50 flex flex-col">
-                        <div className={`absolute inset-0 ${getThemedClass('bg-black bg-opacity-50', 'bg-gray-300 bg-opacity-50')}`} onClick={handleClosePreview}></div>
-                        <div className="relative flex-grow overflow-hidden h-full">
-                            <Preview
-                                config={config}
-                                onClose={handleClosePreview}
-                                onDownload={handleDownload}
-                            />
-                        </div>
+                {/* Always Render the Preview Slide */}
+                <div className={`preview-slide ${showPreview ? 'show' : ''}`}>
+                    {/* Overlay */}
+                    <div
+                        className={`absolute inset-0 ${getThemedClass('bg-black bg-opacity-50', 'bg-gray-300 bg-opacity-50')}`}
+                        onClick={handleClosePreview}
+                    ></div>
+
+                    {/* Preview Content */}
+                    <div className="relative h-full">
+                        <Preview
+                            config={config}
+                            onClose={handleClosePreview}
+                            onDownload={handleDownload}
+                        />
                     </div>
-                )}
+                </div>
             </div>
         </div>
     );

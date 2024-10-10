@@ -16,16 +16,16 @@
 }
 
 .preview-slide {
-    position: fixed;
-    inset: 0;
-    transform: translateY(100%);
-    transition: transform 0.3s ease-out;
-    z-index: 50;
-    display: flex;
-    flex-direction: column;
-    background-color: inherit;
+  position: fixed;
+  inset: 0;
+  transform: translateY(100%);
+  transition: transform 0.3s ease-out;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  background-color: inherit;
 }
 
 .preview-slide.show {
-    transform: translateY(0);
+  transform: translateY(0);
 }
