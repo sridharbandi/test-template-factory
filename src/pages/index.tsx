@@ -22,6 +22,7 @@ const Home: React.FC = () => {
     const [showPreview, setShowPreview] = useState(false);
     const [showBurgerMenu, setShowBurgerMenu] = useState(false);
     const [isOverflowHidden, setIsOverflowHidden] = useState(false);
+    const [isExiting, setIsExiting] = useState(false);
 
     const toggleBurgerMenu = () => {
         setShowBurgerMenu(!showBurgerMenu);
@@ -137,7 +138,8 @@ const Home: React.FC = () => {
 
     const handlePreview = () => {
         setShowPreview(true);
-        setIsOverflowHidden(true);
+        setIsExiting(false);
+        document.body.style.overflow = 'hidden'; // Prevent scrolling on body
     };
 
     const handleDownload = () => {
@@ -145,8 +147,12 @@ const Home: React.FC = () => {
     };
 
     const handleClosePreview = () => {
-        setShowPreview(false);
-        setIsOverflowHidden(false);
+        setIsExiting(true);
+        setTimeout(() => {
+            setShowPreview(false);
+            setIsExiting(false);
+            document.body.style.overflow = ''; // Restore scrolling
+        }, 500); // Match the duration of the exit animation
     };
 
     return (
@@ -190,7 +196,7 @@ const Home: React.FC = () => {
                 <Footer onGenerate={handleGenerate} onPreview={handlePreview} />
 
                 {/* Always Render the Preview Slide */}
-                <div className={`preview-slide ${showPreview ? 'show' : ''}`}>
+                <div className={`preview-slide ${showPreview ? 'show' : ''} ${isExiting ? 'exit' : ''}`}>
                     {/* Overlay */}
                     <div
                         className={`absolute inset-0 ${getThemedClass('bg-black bg-opacity-50', 'bg-gray-300 bg-opacity-50')}`}
