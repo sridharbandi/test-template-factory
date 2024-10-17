@@ -109,30 +109,23 @@ const Home: React.FC = () => {
         return RUNNERS;
     };
 
-    const handleGenerate = async () => {
+    const handleDownload = async () => {
         try {
-            const response = await fetch('/api/generate', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(config),
-            });
-
+            const response = await fetch('/api/github-api?action=download');
             if (response.ok) {
                 const blob = await response.blob();
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = 'test-automation-template.zip';
+                a.download = 'Selenium-Serenity-Junit-Template.zip'; // Set the desired file name
                 document.body.appendChild(a);
                 a.click();
                 a.remove();
             } else {
-                console.error('Failed to generate template');
+                console.error('Failed to download the project');
             }
         } catch (error) {
-            console.error('Error generating template:', error);
+            console.error('Error downloading the project:', error);
         }
     };
 
@@ -140,10 +133,6 @@ const Home: React.FC = () => {
         setShowPreview(true);
         setIsExiting(false);
         document.body.style.overflow = 'hidden'; // Prevent scrolling on body
-    };
-
-    const handleDownload = () => {
-        handleGenerate();
     };
 
     const handleClosePreview = () => {
@@ -193,7 +182,7 @@ const Home: React.FC = () => {
                     </div>
                 </main>
 
-                <Footer onGenerate={handleGenerate} onPreview={handlePreview} />
+                <Footer onDownload={handleDownload} onPreview={handlePreview} />
 
                 {/* Always Render the Preview Slide */}
                 <div className={`preview-slide ${showPreview ? 'show' : ''} ${isExiting ? 'exit' : ''}`}>
