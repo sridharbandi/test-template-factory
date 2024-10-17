@@ -47,6 +47,23 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       const content = await response.text();
       res.status(200).json({ content });
+    } else if (action === 'download') {
+      const downloadUrl = 'https://api.github.com/repos/sridharbandi/Selenium-Serenity-Junit-Template/zipball/master';
+      const response = await fetch(downloadUrl, {
+        headers: {
+          'Accept': 'application/vnd.github+json',
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to download the project');
+      }
+
+      const buffer = await response.arrayBuffer();
+      res.setHeader('Content-Type', 'application/zip');
+      res.setHeader('Content-Disposition', 'attachment; filename=Selenium-Serenity-Junit-Template.zip');
+      res.send(Buffer.from(buffer));
     } else {
       res.status(400).json({ error: 'Invalid action' });
     }
