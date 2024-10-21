@@ -107,7 +107,11 @@ const PreviewSidebar: React.FC<PreviewSidebarProps> = ({
                 >
                     <option value="">Select a file</option>
                     {flatFiles.map((file) => (
-                        <option key={file.path} value={file.path}>
+                        <option 
+                            key={file.path} 
+                            value={file.path} 
+                            disabled={file.path.endsWith('.jar')} // Disable option if file is a .jar
+                        >
                             {file.path}
                         </option>
                     ))}

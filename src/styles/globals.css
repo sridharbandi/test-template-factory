@@ -115,3 +115,9 @@ body.dark {
   background-color: var(--bg-dark);
   color: var(--text-dark);
 }
+
+.file-item.disabled {
+  color: gray; /* Change text color to indicate disabled state */
+  pointer-events: none; /* Disable click events */
+  cursor: not-allowed; /* Change cursor to indicate non-clickable */
+}

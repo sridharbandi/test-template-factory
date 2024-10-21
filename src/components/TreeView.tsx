@@ -22,6 +22,14 @@ const TreeViewItem: React.FC<{
 }> = React.memo(({ item, path, isExpanded, isSelected, onToggle, onSelect, renderChildren }) => {
     const { getThemedClass } = useThemedStyles();
 
+    const handleFileClick = () => {
+        if (item.path.endsWith('.jar')) {
+            // Prevent selection for .jar files
+            return;
+        }
+        onSelect();
+    };
+
     if (item.type === 'tree') {
         return (
             <li>
@@ -53,8 +61,8 @@ const TreeViewItem: React.FC<{
     } else {
         return (
             <li
-                className={`flex items-center cursor-pointer ${getThemedClass('hover:bg-gray-700', 'hover:bg-gray-200')} p-1 ${isSelected ? 'text-violet-400 font-bold' : ''}`}
-                onClick={onSelect}
+                className={`flex items-center cursor-pointer ${getThemedClass('hover:bg-gray-700', 'hover:bg-gray-200')} p-1 ${isSelected ? 'text-violet-400 font-bold' : ''} ${item.path.endsWith('.jar') ? 'file-item disabled' : ''}`}
+                onClick={handleFileClick}
                 role="button"
                 aria-selected={isSelected}
             >
