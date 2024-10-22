@@ -1,0 +1,75 @@
+{
+  "automationTools": [
+    {
+      "name": "Selenium",
+      "languages": [
+        {
+          "name": "Java",
+          "buildTools": ["Maven", "Gradle"],
+          "runners": ["JUnit", "TestNG"]
+        },
+        {
+          "name": "JavaScript",
+          "buildTools": ["Npm", "Yarn"],
+          "runners": ["Mocha", "Jasmine", "Cucumber"]
+        },
+        {
+          "name": "Python",
+          "buildTools": ["Pip"],
+          "runners": ["PyTest", "UnitTest"]
+        }
+      ]
+    },
+    {
+      "name": "Playwright",
+      "languages": [
+        {
+          "name": "Java",
+          "buildTools": ["Maven", "Gradle"],
+          "runners": ["JUnit", "TestNG"]
+        },
+        {
+          "name": "JavaScript",
+          "buildTools": ["Npm", "Yarn"],
+          "runners": ["Mocha", "Jasmine", "Cucumber"]
+        },
+        {
+          "name": "Python",
+          "buildTools": ["Pip"],
+          "runners": ["PyTest", "UnitTest"]
+        }
+      ]
+    },
+    {
+      "name": "Cypress",
+      "languages": [
+        {
+          "name": "JavaScript",
+          "buildTools": ["Npm", "Yarn"],
+          "runners": ["Mocha", "Cucumber"]
+        },
+        {
+          "name": "TypeScript",
+          "buildTools": ["Npm", "Yarn"],
+          "runners": ["Mocha", "Cucumber"]
+        }
+      ]
+    },
+    {
+      "name": "TestCafe",
+      "languages": [
+        {
+          "name": "JavaScript",
+          "buildTools": ["Npm", "Yarn"],
+          "runners": ["TestCafe"]
+        },
+        {
+          "name": "TypeScript",
+          "buildTools": ["Npm", "Yarn"],
+          "runners": ["TestCafe"]
+        }
+      ]
+    }
+  ]
+}
+

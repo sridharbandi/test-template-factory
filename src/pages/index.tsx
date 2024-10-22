@@ -3,7 +3,7 @@ import Head from 'next/head';
 import Footer from '../components/Footer';
 import RadioGroup from '../components/RadioGroup';
 import { ProjectConfig } from '../types';
-import { AUTOMATION_TOOLS, PROGRAMMING_LANGUAGES, BUILD_TOOLS, RUNNERS } from '../utils/constants';
+import configData from '../utils/config.json'; // Import the JSON configuration
 import Preview from '../components/Preview';
 import { useTheme } from '../components/ThemeProvider';
 import { useThemedStyles } from '../hooks/useThemedStyles';
@@ -33,6 +33,16 @@ const Home: React.FC = () => {
         const savedConfig = localStorage.getItem('projectConfig');
         if (savedConfig) {
             setConfig(JSON.parse(savedConfig));
+        } else {
+            // Load from config if local storage is empty
+            const defaultConfig = {
+                tool: configData.automationTools[0].name, // Default to the first tool
+                language: configData.automationTools[0].languages[0].name, // Default to the first language
+                buildTool: configData.automationTools[0].languages[0].buildTools[0], // Default to the first build tool
+                runner: configData.automationTools[0].languages[0].runners[0], // Default to the first runner
+            };
+            setConfig(defaultConfig);
+            localStorage.setItem('projectConfig', JSON.stringify(defaultConfig));
         }
     }, []);
 
@@ -41,27 +51,11 @@ const Home: React.FC = () => {
             const newConfig = { ...prevConfig, [key]: value };
 
             if (key === 'tool') {
-                if (value === 'selenium' || value === 'playwright') {
-                    newConfig.language = 'java';
-                    newConfig.buildTool = 'maven';
-                    newConfig.runner = 'junit';
-                } else if (value === 'cypress' || value === 'testcafe') {
-                    newConfig.language = 'javascript';
-                    newConfig.buildTool = 'npm';
-                    newConfig.runner = value === 'cypress' ? 'cypress-mocha' : 'testcafe';
-                }
-            }
-
-            if ((newConfig.tool === 'selenium' || newConfig.tool === 'playwright') && key === 'language') {
-                if (value === 'javascript' || value === 'typescript') {
-                    newConfig.buildTool = 'npm';
-                    newConfig.runner = 'mocha';
-                } else if (value === 'python') {
-                    newConfig.buildTool = 'pip';
-                    newConfig.runner = 'pytest';
-                } else {
-                    newConfig.buildTool = 'maven';
-                    newConfig.runner = 'junit';
+                const selectedTool = configData.automationTools.find(tool => tool.name === value);
+                if (selectedTool) {
+                    newConfig.language = selectedTool.languages[0].name; // Default to the first language
+                    newConfig.buildTool = selectedTool.languages[0].buildTools[0]; // Default to the first build tool
+                    newConfig.runner = selectedTool.languages[0].runners[0]; // Default to the first runner
                 }
             }
 
@@ -71,42 +65,20 @@ const Home: React.FC = () => {
     };
 
     const getLanguageOptions = () => {
-        if (config.tool === 'selenium' || config.tool === 'playwright') {
-            return ['java', 'javascript', 'typescript', 'python', 'csharp'];
-        } else if (config.tool === 'cypress' || config.tool === 'testcafe') {
-            return ['javascript', 'typescript'];
-        }
-        return PROGRAMMING_LANGUAGES;
+        const selectedTool = configData.automationTools.find(tool => tool.name === config.tool);
+        return selectedTool ? selectedTool.languages.map(lang => lang.name) : [];
     };
 
     const getBuildToolOptions = () => {
-        if (config.tool === 'selenium' || config.tool === 'playwright') {
-            if (config.language === 'javascript' || config.language === 'typescript') {
-                return ['npm', 'yarn'];
-            } else if (config.language === 'python') {
-                return ['pip'];
-            }
-            return ['maven', 'gradle'];
-        } else if (config.tool === 'cypress' || config.tool === 'testcafe') {
-            return ['npm', 'yarn'];
-        }
-        return BUILD_TOOLS;
+        const selectedTool = configData.automationTools.find(tool => tool.name === config.tool);
+        const selectedLanguage = selectedTool?.languages.find(lang => lang.name === config.language);
+        return selectedLanguage ? selectedLanguage.buildTools : [];
     };
 
     const getRunnerOptions = () => {
-        if (config.tool === 'selenium' || config.tool === 'playwright') {
-            if (config.language === 'javascript' || config.language === 'typescript') {
-                return ['mocha', 'jasmine', 'cucumber'];
-            } else if (config.language === 'python') {
-                return ['pytest', 'unittest', 'behave'];
-            }
-            return ['junit', 'testng', 'junit-cucumber', 'testng-cucumber'];
-        } else if (config.tool === 'cypress') {
-            return ['cypress-mocha', 'cypress-cucumber'];
-        } else if (config.tool === 'testcafe') {
-            return ['testcafe', 'cucumber'];
-        }
-        return RUNNERS;
+        const selectedTool = configData.automationTools.find(tool => tool.name === config.tool);
+        const selectedLanguage = selectedTool?.languages.find(lang => lang.name === config.language);
+        return selectedLanguage ? selectedLanguage.runners : [];
     };
 
     const handleDownload = async () => {
@@ -157,7 +129,7 @@ const Home: React.FC = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                         <RadioGroup
                             label="Tool"
-                            options={AUTOMATION_TOOLS}
+                            options={configData.automationTools.map(tool => tool.name)}
                             selectedOption={config.tool}
                             onChange={handleConfigChange('tool')}
                         />
@@ -181,9 +153,7 @@ const Home: React.FC = () => {
                         />
                     </div>
                 </main>
-
                 <Footer onDownload={handleDownload} onPreview={handlePreview} />
-
                 {/* Always Render the Preview Slide */}
                 <div className={`preview-slide ${showPreview ? 'show' : ''} ${isExiting ? 'exit' : ''}`}>
                     {/* Overlay */}
